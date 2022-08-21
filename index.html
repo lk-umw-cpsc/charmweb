@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CharmOS Web Interface</title>
+        <link href="reset.css" rel="stylesheet"/>
+        <link href="home.css" rel="stylesheet"/>
+    </head>
+    <body>
+        <header>
+            <h1>CharmOS Web Interface</h1>
+        </header>
+        <main>
+            <section id="console-container">
+                <h2>I/O</h2>
+                <table>
+                    <tr><td>pretend a command is here</td></tr>
+                    <tr><td>pretend a command is here</td></tr>
+                    <tr><td>pretend a command is here</td></tr>
+                    <tr><td>pretend a command is here</td></tr>
+                    <tr><td>pretend a command is here</td></tr>
+                    <tr><td>pretend a command is here</td></tr>
+                    <tr><td>pretend a command is here</td></tr>
+                    <tr><td>pretend a command is here</td></tr>
+                    <tr><td>pretend a command is here</td></tr>
+                    <tr><td>pretend a command is here</td></tr>
+                    <tr><td>pretend a command is here</td></tr>
+                    <tr><td>pretend a command is here</td></tr>
+                    <tr><td>pretend a command is here</td></tr>
+                    <tr><td>pretend a command is here</td></tr>
+                </table>
+                <input type="text" id="user-input"/>
+                <p style="text-align: center;">or</p>
+                <input type="button" id="step-button" value="Step"/>
+            </section>
+            <section>
+                <h2>Instructions</h2>
+                <table>
+                    <tr><td>add rd, rm, op2</td></tr>
+                    <tr><td>sub rd, rm, op2</td></tr>
+                    <tr><td>mul rd, rm, op2</td></tr>
+                    <tr><td>div rd, rm, op2</td></tr>
+                    <tr><td>mod rd, rm, op2</td></tr>
+                    <tr><td>and rd, rm, op2</td></tr>
+                    <tr><td>orr rd, rm, op2</td></tr>
+                    <tr><td>eor rd, rn, op2</td></tr>
+                    <tr><td id="current-instruction">adc rd, rm, op2</td></tr>
+                    <tr><td>sbc rd, rm, op2</td></tr>
+                    <tr><td>adf rd, rm, op2</td></tr>
+                    <tr><td>suf rd, rm, op2</td></tr>
+                    <tr><td>muf rd, rm, op2</td></tr>
+                    <tr><td>dif rd, rm, op2</td></tr>
+                    <tr><td>mov rd, op2</td></tr>
+                    <tr><td>mva rd, op2</td></tr>
+                    <tr><td>cmp rd, op2</td></tr>
+                </table>
+            </section>
+            <section>
+                <h2>Registers</h2>
+                <table id="registers-table">
+                    <thead>
+                        <th id="registers-col"></th>
+                        <th></th>
+                    </thead>
+                    <tr>
+                        <td>r0:</td>
+                        <td>???</td>
+                    </tr>
+                    <tr>
+                        <td>r1:</td>
+                        <td>???</td>
+                    </tr>
+                    <tr>
+                        <td>r2:</td>
+                        <td>???</td>
+                    </tr>
+                    <tr>
+                        <td>r3:</td>
+                        <td>???</td>
+                    </tr>
+                    <tr>
+                        <td>r4:</td>
+                        <td>???</td>
+                    </tr>
+                    <tr>
+                        <td>r5:</td>
+                        <td>???</td>
+                    </tr>
+                    <tr>
+                        <td>r6:</td>
+                        <td>???</td>
+                    </tr>
+                    <tr>
+                        <td>r7:</td>
+                        <td>???</td>
+                    </tr>
+                    <tr>
+                        <td>r8:</td>
+                        <td>???</td>
+                    </tr>
+                    <tr>
+                        <td>r9:</td>
+                        <td>???</td>
+                    </tr>
+                    <tr>
+                        <td>r10:</td>
+                        <td>???</td>
+                    </tr>
+                    <tr>
+                        <td>r11:</td>
+                        <td>???</td>
+                    </tr>
+                    <tr>
+                        <td>r12:</td>
+                        <td>???</td>
+                    </tr>
+                    <tr>
+                        <td>sp:</td>
+                        <td>???</td>
+                    </tr>
+                    <tr>
+                        <td>lr:</td>
+                        <td>???</td>
+                    </tr>
+                    <tr>
+                        <td>pc:</td>
+                        <td>???</td>
+                    </tr>
+                    <tr>
+                        <td>cpsr:</td>
+                        <td>???</td>
+                    </tr>
+                </table>
+            </section>
+        </main>
+        <footer>
+            <p>
+                Web interface and Python server implemented by <a href="mailto:lknight2@mail.umw.edu">Lauren Knight</a>
+            </p>
+            <p>
+                Thank you to <a href="mailto:ecooper@umw.edu">Professor Gusty Cooper</a>
+                and the <a href="https://www.umw.edu">University of Mary Washington</a> for the opportunity to work on this project :)
+            </p>
+        </footer>
+    </body>
+</html>
