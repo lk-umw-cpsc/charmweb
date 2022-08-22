@@ -93,22 +93,37 @@ main h2 {
     text-align: center;
 }
 
-main input {
+main input, main button {
     width: 100%;
     font-family: Cousine;
     font-size: 16pt;
+    padding: 2px;
 }
 
 #registers-col {
-    /* column-width: 20px; */
-    width: 10%;
-    
+    width: 10pt;
+}
+
+#registers-table tr>td:nth-of-type(1) {
+    text-align: right;
+}
+
+#instruction-address-col {
+    width: 110pt;
+}
+
+#instruction-table tr>td:nth-of-type(1) {
+    color: #8DC9F7;
 }
 
 #step-button {
     background-color: #0067A2;
     color: white;
     border: 1px solid #8DC9F7;
+}
+
+#step-button:hover {
+    background-color: #B05D3C;
 }
 
 #current-instruction {

@@ -28,30 +28,86 @@
                     <tr><td>pretend a command is here</td></tr>
                     <tr><td>pretend a command is here</td></tr>
                 </table>
-                <input type="text" id="user-input"/>
+                <input type="text" id="user-input" placeholder="enter a command here"/>
                 <p style="text-align: center;">or</p>
-                <input type="button" id="step-button" value="Step"/>
+                <button type="button" id="step-button">Step</button>
             </section>
             <section>
                 <h2>Instructions</h2>
-                <table>
-                    <tr><td>add rd, rm, op2</td></tr>
-                    <tr><td>sub rd, rm, op2</td></tr>
-                    <tr><td>mul rd, rm, op2</td></tr>
-                    <tr><td>div rd, rm, op2</td></tr>
-                    <tr><td>mod rd, rm, op2</td></tr>
-                    <tr><td>and rd, rm, op2</td></tr>
-                    <tr><td>orr rd, rm, op2</td></tr>
-                    <tr><td>eor rd, rn, op2</td></tr>
-                    <tr><td id="current-instruction">adc rd, rm, op2</td></tr>
-                    <tr><td>sbc rd, rm, op2</td></tr>
-                    <tr><td>adf rd, rm, op2</td></tr>
-                    <tr><td>suf rd, rm, op2</td></tr>
-                    <tr><td>muf rd, rm, op2</td></tr>
-                    <tr><td>dif rd, rm, op2</td></tr>
-                    <tr><td>mov rd, op2</td></tr>
-                    <tr><td>mva rd, op2</td></tr>
-                    <tr><td>cmp rd, op2</td></tr>
+                <table id="instruction-table">
+                    <thead>
+                        <th id="instruction-address-col"></th>
+                        <th></th>
+                    </thead>
+                    
+                    <tr>
+                        <td>0x???????0</td>
+                        <td>add rd, rm, op2</td>
+                    </tr>
+                    <tr>
+                        <td>0x???????1</td>
+                        <td>sub rd, rm, op2</td>
+                    </tr>
+                    <tr>
+                        <td>0x???????2</td>
+                        <td>mul rd, rm, op2</td>
+                    </tr>
+                    <tr>
+                        <td>0x???????3</td>
+                        <td>div rd, rm, op2</td>
+                    </tr>
+                    <tr>
+                        <td>0x???????4</td>
+                        <td>mod rd, rm, op2</td>
+                    </tr>
+                    <tr>
+                        <td>0x???????5</td>
+                        <td>and rd, rm, op2</td>
+                    </tr>
+                    <tr>
+                        <td>0x???????6</td>
+                        <td>orr rd, rm, op2</td>
+                    </tr>
+                    <tr>
+                        <td>0x???????7</td>
+                        <td>eor rd, rn, op2</td>
+                    </tr>
+                    <tr>
+                        <td>0x???????8</td>
+                        <td id="current-instruction">adc rd, rm, op2</td>
+                    </tr>
+                    <tr>
+                        <td>0x???????9</td>
+                        <td>sbc rd, rm, op2</td>
+                    </tr>
+                    <tr>
+                        <td>0x???????a</td>
+                        <td>adf rd, rm, op2</td>
+                    </tr>
+                    <tr>
+                        <td>0x???????b</td>
+                        <td>suf rd, rm, op2</td>
+                    </tr>
+                    <tr>
+                        <td>0x???????c</td>
+                        <td>muf rd, rm, op2</td>
+                    </tr>
+                    <tr>
+                        <td>0x???????d</td>
+                        <td>dif rd, rm, op2</td>
+                    </tr>
+                    <tr>
+                        <td>0x???????e</td>
+                        <td>mov rd, op2</td>
+                    </tr>
+                    <tr>
+                        <td>0x???????f</td>
+                        <td>mva rd, op2</td>
+                    </tr>
+                    <tr>
+                        <td>0x??????10</td>
+                        <td>cmp rd, op2</td>
+                    </tr>
                 </table>
             </section>
             <section>
@@ -134,7 +190,7 @@
         </main>
         <footer>
             <p>
-                Web interface and Python server implemented by <a href="mailto:lknight2@mail.umw.edu">Lauren Knight</a>
+                Web interface and Python backend implemented by <a href="mailto:lknight2@mail.umw.edu">Lauren Knight</a>
             </p>
             <p>
                 Thank you to <a href="mailto:ecooper@umw.edu">Professor Gusty Cooper</a>
