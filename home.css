@@ -123,7 +123,11 @@ main input, main button {
 }
 
 #step-button:hover {
-    background-color: #B05D3C;
+    background-color: #004c79;
+}
+
+#step-button:active {
+    background-color: #002D61;
 }
 
 #current-instruction {
