@@ -106,6 +106,7 @@ main input, main button {
 }
 
 #registers-table tr>td:nth-of-type(1) {
+    color: $light;
     text-align: right;
 }
 
@@ -118,7 +119,7 @@ main input, main button {
 }
 
 #step-button {
-    background-color: $darkest;
+    background-color: $mid;
     color: $font-color;
     border: 1px solid $light;
 }

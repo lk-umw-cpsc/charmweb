@@ -84,6 +84,7 @@ main input, main button {
 }
 
 #registers-table tr > td:nth-of-type(1) {
+  color: #8DC9F7;
   text-align: right;
 }
 
@@ -96,7 +97,7 @@ main input, main button {
 }
 
 #step-button {
-  background-color: #002D61;
+  background-color: #0067A2;
   color: white;
   border: 1px solid #8DC9F7;
 }
