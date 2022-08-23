@@ -34,6 +34,27 @@ function stepPressed() {
     runCommand('s');
 }
 
+function resetRegisterColors() {
+    for (var register of registers) {
+        register.hexDisplay.classList.remove('highlight');
+    }
+}
+
+function callback() {
+    const response = JSON.parse(this.responseText);
+
+    resetRegisterColors();
+    for (var update of response.register_updates) {
+        updateRegister(update.register, update.value, 0, 0);
+    }
+
+    new_instructions = response.instruction_frame;
+    for (var i = 0; i < instructions.length; i++) {
+        var instruction = new_instructions[i];
+        instructions[i].display.innerHTML = instruction.instruction;
+        instructions[i].addressDisplay.innerHTML = instruction.address;
+    }
+}
 /**
  * To be implemented. This will use AJAX and JSON to talk to the
  * webserver without reloading the page
@@ -41,8 +62,15 @@ function stepPressed() {
  */
 function runCommand(command) {
     // to be implemented
-    console.log(command);
+    // console.log(command);
+
     postOutput(command);
+    // const contents = {message: command}
+    var request = new XMLHttpRequest();
+    request.open("POST", "/", true);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.onload = callback;
+    request.send(JSON.stringify({message: command}));
 }
 
 /**
@@ -76,6 +104,7 @@ function postInstructionFrame(frame) {
  */
 function updateRegister(n, hex, base10, floating) {
     registers[n].hexDisplay.innerHTML = hex;
+    registers[n].hexDisplay.classList.add('highlight');
 }
 
 /**
@@ -115,8 +144,6 @@ function onLoad() {
     postOutput("scriptfilename: no script");
     postOutput("loading figisa4.0");
     postOutput("File figisa4.o loaded!");
-
-    updateRegister(0, "0xfeedabee");
 }
 
 // Set up onLoad to be called once the DOM for the page is fully loaded
