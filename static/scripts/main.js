@@ -115,6 +115,8 @@ function onLoad() {
     postOutput("scriptfilename: no script");
     postOutput("loading figisa4.0");
     postOutput("File figisa4.o loaded!");
+
+    updateRegister(0, "0xfeedabee");
 }
 
 // Set up onLoad to be called once the DOM for the page is fully loaded

@@ -21,17 +21,17 @@ $highlight: #F7BF0A;
 
 @font-face {
     font-family: Cousine;
-    src: url(fonts/Cousine-Regular.ttf);
+    src: url(/static/fonts/Cousine-Regular.ttf);
 }
 
 @font-face {
     font-family: Heebo;
-    src: url(fonts/Heebo-Thin.ttf);
+    src: url(/static/fonts/Heebo-Thin.ttf);
 }
 
 @font-face {
     font-family: Urbanist;
-    src: url(fonts/Urbanist-Medium.ttf)
+    src: url(/static/fonts/Urbanist-Medium.ttf)
 }
 
 html {
