@@ -68,6 +68,11 @@ main > section {
   box-shadow: 0px 4px 8px black;
 }
 
+#current-instruction-row {
+  color: #F7BF0A;
+  text-shadow: 0px 0px 4px black;
+}
+
 main h2 {
   text-align: center;
 }
@@ -112,7 +117,6 @@ main input, main button {
 
 #current-instruction {
   font-weight: bold;
-  color: #8DC9F7;
 }
 
 main table {

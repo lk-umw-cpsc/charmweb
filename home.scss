@@ -14,6 +14,8 @@ $button-press-color: #002D61;
 $console-border: #4A5156;
 $console-background: black;
 
+// $active-instruction-color: 
+
 $highlight: #F7BF0A;
 
 @font-face {
@@ -90,6 +92,11 @@ main > section {
     box-shadow: 0px 4px 8px black;
 }
 
+#current-instruction-row {
+    color: $highlight;
+    text-shadow: 0px 0px 4px black;
+}
+
 main h2 {
     text-align: center;
 }
@@ -134,7 +141,6 @@ main input, main button {
 
 #current-instruction {
     font-weight: bold;
-    color: $light;
 }
 
 main table {
