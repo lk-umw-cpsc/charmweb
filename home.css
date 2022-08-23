@@ -37,6 +37,7 @@ h1, h2, h3 {
 
 #console-container {
   background-color: black;
+  background-image: linear-gradient(rgb(20, 20, 20), black 20%);
   border-color: #4A5156;
 }
 
