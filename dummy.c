@@ -3,9 +3,17 @@
 
 // /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.8/Headers
 
+// Register values
 #define CHEMU_INSTRUCTION_DISPLAY_COUNT 17
 static int registers[CHEMU_INSTRUCTION_DISPLAY_COUNT];
 
+/**
+ * @brief The C implementation of the chemu.do(command) method
+ * 
+ * @param self The calling Python object
+ * @param args The arguments passed via the Python call to the function
+ * @return PyObject* a dict containing changed registers and the current 17 visible instructions
+ */
 static PyObject *method_do(PyObject *self, PyObject *args) {
     char *command;
     if (!PyArg_ParseTuple(args, "s", &command)) {
@@ -39,11 +47,13 @@ static PyObject *method_do(PyObject *self, PyObject *args) {
     return returnValue;
 }
 
+// Null-terminated array of methods available in the module
 static PyMethodDef chemuMethods[] = {
     {"do", method_do, METH_VARARGS, "Python interface for Chemu"},
     {NULL, NULL, 0, NULL}
 };
 
+// Module struct pointing to chemuMethods
 static struct PyModuleDef chemuModule = {
     PyModuleDef_HEAD_INIT,
     "chemu",
@@ -52,6 +62,11 @@ static struct PyModuleDef chemuModule = {
     chemuMethods
 };
 
+/**
+ * @brief Function called by Python to initialize the module
+ * 
+ * @return PyMODINIT_FUNC An object containing the module's methods
+ */
 PyMODINIT_FUNC PyInit_chemu(void) {
     time_t t;
     time(&t);

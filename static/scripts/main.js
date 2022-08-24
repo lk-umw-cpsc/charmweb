@@ -1,4 +1,7 @@
-
+/**
+ * This file contains the scripts that communicate with the
+ * Flask server and display its response on the webpage.
+ */
 var commandField;
 var consoleTable;
 var registers = [];
@@ -34,12 +37,44 @@ function stepPressed() {
     runCommand('s');
 }
 
+/**
+ * Resets the color of all the registers in the display
+ * (a highlight is applied to registers changed in the previos step)
+ */
 function resetRegisterColors() {
     for (var register of registers) {
         register.hexDisplay.classList.remove('active');
     }
 }
 
+/**
+ * Updates the instruction display with a frame of data
+ * received by the server
+ * @param {*} frame 
+ */
+function postInstructionFrame(frame) {
+    for (var i = 0; i < instructions.length; i++) {
+        var instruction = instructions[i];
+        instruction.display.innerHTML = frame[i].assembly;
+        instruction.addressDisplay.innerHTML = frame[i].address;
+    }
+}
+
+/**
+ * Updates a given register's display with hex, base10 and floating point values
+ * @param {*} n an integer value containing which register to update. cpsr
+ * @param {*} hex a ten-character string with the reg's value as hexadecimal
+ * @param {*} base10 TBI
+ * @param {*} floating TBI
+ */
+function updateRegister(n, hex, base10, floating) {
+    registers[n].hexDisplay.innerHTML = hex;
+    registers[n].hexDisplay.classList.add('active');
+}
+
+/**
+ * Function called when we receive a JSON response from the Flask backend
+ */
 function callback() {
     const response = JSON.parse(this.responseText);
 
@@ -55,10 +90,11 @@ function callback() {
         instructions[i].addressDisplay.innerHTML = instruction.address;
     }
 }
+
 /**
- * To be implemented. This will use AJAX and JSON to talk to the
- * webserver without reloading the page
- * @param {*} command 
+ * Sends a command to the Flask backend to be executed by the virtual machine
+ * The response to this command will be handled by the callback() function
+ * @param {*} command a string containing the command to execute
  */
 function runCommand(command) {
     // to be implemented
@@ -84,32 +120,8 @@ function postOutput(output) {
 }
 
 /**
- * Updates the instruction display with a frame of data
- * received by the server
- * @param {*} frame 
- */
-function postInstructionFrame(frame) {
-    for (var i = 0; i < instructions.length; i++) {
-        var instruction = instructions[i];
-        instruction.display.innerHTML = frame[i].assembly;
-        instruction.addressDisplay.innerHTML = frame[i].address;
-    }
-}
-/**
- * Updates a given register's display with hex, base10 and floating point values
- * @param {*} n 
- * @param {*} hex 
- * @param {*} base10 
- * @param {*} floating 
- */
-function updateRegister(n, hex, base10, floating) {
-    registers[n].hexDisplay.innerHTML = hex;
-    registers[n].hexDisplay.classList.add('active');
-}
-
-/**
  * Function called when the page fully loads
- * This sets up important global variables and event listeners
+ * This sets up important global variables and event listeners (user input)
  */
 function onLoad() {
     commandField = document.getElementById("user-input");
