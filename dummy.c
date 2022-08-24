@@ -2,6 +2,7 @@
 #include <Python.h>
 
 // /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.8/Headers
+
 #define CHEMU_INSTRUCTION_DISPLAY_COUNT 17
 static int array[CHEMU_INSTRUCTION_DISPLAY_COUNT];
 
@@ -21,7 +22,7 @@ static PyObject *method_do(PyObject *self, PyObject *args) {
     PyObject *registers = PyList_New(0);
 
     PyObject *reg16 = Py_BuildValue("{siss}", "register", 0, "value", "0xfeedabee");
-
+    
     PyList_Append(registers, reg16);
 
     PyObject *returnValue = Py_BuildValue("{sOsO}", "registers", registers, "instructions", instructions);
