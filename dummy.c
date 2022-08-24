@@ -4,7 +4,7 @@
 // /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.8/Headers
 
 #define CHEMU_INSTRUCTION_DISPLAY_COUNT 17
-static int array[CHEMU_INSTRUCTION_DISPLAY_COUNT];
+static int registers[CHEMU_INSTRUCTION_DISPLAY_COUNT];
 
 static PyObject *method_do(PyObject *self, PyObject *args) {
     char *command;
@@ -15,15 +15,25 @@ static PyObject *method_do(PyObject *self, PyObject *args) {
 
     // printf("%s", command);
     PyObject *instructions = PyList_New(0);
+    char hex_buffer[11];
+    char cpsr_value[11];
     for (int i = 0; i < CHEMU_INSTRUCTION_DISPLAY_COUNT; i++) {
-        PyList_Append(instructions, Py_BuildValue("{ssss}", "instruction", "testing", "address", "0x12345678"));
+        int rn = rand();
+        registers[i] = rn;
+        snprintf(hex_buffer, 11, "0x%08X", rn);
+        if (i == 8) {
+            strcpy(cpsr_value, hex_buffer);
+        }
+        PyList_Append(instructions, Py_BuildValue("{ssss}", "instruction", "testing", "address", hex_buffer));
     }
 
     PyObject *registers = PyList_New(0);
 
-    PyObject *reg16 = Py_BuildValue("{siss}", "register", 0, "value", "0xfeedabee");
+    PyObject *reg16 = Py_BuildValue("{siss}", "register", rand() % 16, "value", "0xfeedabee");
+    PyObject *cpsr = Py_BuildValue("{siss}", "register", 16, "value", cpsr_value);
     
     PyList_Append(registers, reg16);
+    PyList_Append(registers, cpsr);
 
     PyObject *returnValue = Py_BuildValue("{sOsO}", "registers", registers, "instructions", instructions);
     return returnValue;
@@ -43,8 +53,11 @@ static struct PyModuleDef chemuModule = {
 };
 
 PyMODINIT_FUNC PyInit_chemu(void) {
+    time_t t;
+    time(&t);
+    srand(t);
     for (int i = 0; i < CHEMU_INSTRUCTION_DISPLAY_COUNT; i++) {
-        array[i] = i;
+        registers[i] = rand();
     }
     return PyModule_Create(&chemuModule);
 }
