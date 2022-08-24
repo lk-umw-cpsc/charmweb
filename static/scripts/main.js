@@ -36,7 +36,7 @@ function stepPressed() {
 
 function resetRegisterColors() {
     for (var register of registers) {
-        register.hexDisplay.classList.remove('highlight');
+        register.hexDisplay.classList.remove('active');
     }
 }
 
@@ -104,7 +104,7 @@ function postInstructionFrame(frame) {
  */
 function updateRegister(n, hex, base10, floating) {
     registers[n].hexDisplay.innerHTML = hex;
-    registers[n].hexDisplay.classList.add('highlight');
+    registers[n].hexDisplay.classList.add('active');
 }
 
 /**
