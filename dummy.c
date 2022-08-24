@@ -68,11 +68,11 @@ static struct PyModuleDef chemuModule = {
  * @return PyMODINIT_FUNC An object containing the module's methods
  */
 PyMODINIT_FUNC PyInit_chemu(void) {
+    // initalize RNG with current time as seed
     time_t t;
     time(&t);
     srand(t);
-    for (int i = 0; i < CHEMU_INSTRUCTION_DISPLAY_COUNT; i++) {
-        registers[i] = rand();
-    }
+
+    // return the filled-in module struct
     return PyModule_Create(&chemuModule);
 }
