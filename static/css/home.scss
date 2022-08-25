@@ -70,6 +70,8 @@ h1, h2, h3 {
     background-color: $console-background;
     background-image: linear-gradient($console-background-top, $console-background 20%);
     border-color: $console-border;
+    // flex: auto;
+    // width: 47%;
 }
 
 .input-container {
@@ -101,6 +103,14 @@ h1, h2, h3 {
     outline: none;
 }
 
+#instruction-container {
+    
+}
+
+#register-container {
+    
+}
+
 header>h1 {
     text-align: center;
     font-size: 32pt;
@@ -121,6 +131,7 @@ main > section {
     border-radius: 5px;
     padding: 8pt;
     box-shadow: 0px 4px 8px black;
+    // margin: 0px 1.5%;
 }
 
 #current-instruction-row, .active {
