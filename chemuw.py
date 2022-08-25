@@ -15,6 +15,10 @@ def home():
             s = s[0:32]
         if message == 's':
             result = chemu.do(message)
+            for instruction in result['instructions']:
+                addr = instruction['instruction'][:10]
+                instruction['instruction'] = instruction['instruction'][11:]
+                instruction['address'] = addr
             return jsonify(register_updates=result['registers'], instruction_frame=result['instructions'])
         return None
     else:
