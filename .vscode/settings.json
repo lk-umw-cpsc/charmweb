@@ -14,6 +14,9 @@
         "variant": "c",
         "version": "c",
         "compare": "c",
-        "memory": "c"
+        "memory": "c",
+        "cpu.h": "c",
+        "memory.h": "c",
+        "stdarg.h": "c"
     }
 }
