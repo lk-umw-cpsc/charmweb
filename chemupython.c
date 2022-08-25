@@ -193,9 +193,7 @@ void do_script(char *scriptfilename);
 int process_args(int argc, char **argv);
 int getcmd(char *buf, int nbuf);
 
-// Register values
-#define CHEMU_INSTRUCTION_DISPLAY_COUNT 17
-// static int registers[CHEMU_INSTRUCTION_DISPLAY_COUNT];
+int registers_last_step[17];
 
 /**
  * @brief The C implementation of the chemu.do(command) method
@@ -209,27 +207,40 @@ static PyObject *method_do(PyObject *self, PyObject *args) {
     if (!PyArg_ParseTuple(args, "s", &command)) {
         return NULL;
     }
+
     // we now know what the user sent over...
+    char command_copy[256];
+    strncpy(command_copy, command, 256);
     do_cmd(1, &command);
 
     PyObject *instruction_list = PyList_New(0);
     for (int i = 0; i < 11; i++) {
         PyList_Append(instruction_list, Py_BuildValue("{ssss}", "instruction", instinfo[i], "address", "0xfeedabee"));
     }
+    // ensures the emulator outputs to the correct index on next go
+    insti = 0;
 
-    char pc_value[11];
-    snprintf(pc_value, 11, "0x%08X", registers[15]);
+    PyObject *output_strings = PyList_New(0);
+    for (int i = 0; i < resi; i++) {
+        PyList_Append(output_strings, Py_BuildValue("s", resvals[i]));
+    }
+    resi = 0;
 
-    char cpsr_value[11];
-    snprintf(cpsr_value, 11, "0x%08X", cpsr);
-    PyObject *reg_update = Py_BuildValue("{siss}", "register", 16, "value", cpsr_value);
-    PyObject *cpsr_update = Py_BuildValue("{siss}", "register", 15, "value", pc_value);
+    PyObject* register_updates_list = PyList_New(0);
 
-    PyObject *register_updates = PyList_New(0);
-    PyList_Append(register_updates, reg_update);
-    PyList_Append(register_updates, cpsr_update);
+    char hex_value[11];
+    for (int i = 0; i < 17; i++) {
+        int reg = registers[i];
+        if (reg != registers_last_step[i]) {
+            snprintf(hex_value, 11, "0x%08X", reg);
+            PyObject *reg_update = Py_BuildValue("{siss}", "register", i, "value", hex_value);
+            PyList_Append(register_updates_list, reg_update);
+            registers_last_step[i] = registers[i];
+        }
+    }
 
-    PyObject *returnValue = Py_BuildValue("{sOsO}", "registers", register_updates, "instructions", instruction_list);
+    PyObject *returnValue = Py_BuildValue("{sOsOsO}", "registers", register_updates_list, "instructions", instruction_list,
+            "output", output_strings);
     return returnValue;
 }
 
@@ -254,13 +265,14 @@ static struct PyModuleDef chemuModule = {
  * @return PyMODINIT_FUNC An object containing the module's methods
  */
 PyMODINIT_FUNC PyInit_chemu(void) {
-    // initalize RNG with current time as seed
-    time_t t;
-    time(&t);
-    srand(t);
-    load_memory("figisa30.o");
-    // char* filename = "figisa30.o";
-    // process_args(1, &filename);
+
+    for (int i = 0; i < 17; i++) {
+        registers_last_step[i] = 0;
+    }
+
+    // load object file... to-do: move this to an init function
+    load_memory("figisa17.o");
+    
     // return the filled-in module struct
     return PyModule_Create(&chemuModule);
 }

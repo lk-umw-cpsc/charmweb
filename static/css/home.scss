@@ -72,10 +72,33 @@ h1, h2, h3 {
     border-color: $console-border;
 }
 
+.input-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid $console-border;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.border-highlight {
+    outline: solid 1px white;
+}
+
+.input-decoration {
+    color: $font-color;
+    font-size: 16pt;
+}
+
 #user-input {
     background-color: $console-background;
-    border: 1px solid $font-color;
+    // border: 1px solid $font-color;
+    border: none;
     color: $font-color;
+    flex: 2;
+}
+
+#user-input:focus {
+    outline: none;
 }
 
 header>h1 {

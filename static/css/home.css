@@ -1,3 +1,9 @@
+/**
+Note that this is a sass CSS file; use "sass home.scss home.css" to build home.css
+
+The colors below are inserted into the .css file.
+This will make theming/color tweaks easier
+**/
 @font-face {
   font-family: Cousine;
   src: url(/static/fonts/Cousine-Regular.ttf);
@@ -41,10 +47,32 @@ h1, h2, h3 {
   border-color: #4A5156;
 }
 
+.input-container {
+  display: flex;
+  align-items: center;
+  border: 1px solid #4A5156;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.border-highlight {
+  outline: solid 1px white;
+}
+
+.input-decoration {
+  color: white;
+  font-size: 16pt;
+}
+
 #user-input {
   background-color: black;
-  border: 1px solid white;
+  border: none;
   color: white;
+  flex: 2;
+}
+
+#user-input:focus {
+  outline: none;
 }
 
 header > h1 {

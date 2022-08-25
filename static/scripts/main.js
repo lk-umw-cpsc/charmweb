@@ -78,6 +78,10 @@ function updateRegister(n, hex, base10, floating) {
 function callback() {
     const response = JSON.parse(this.responseText);
 
+    for (var s of response.output) {
+        postOutput(s);
+    }
+
     resetRegisterColors();
     for (var update of response.register_updates) {
         updateRegister(update.register, update.value, 0, 0);
@@ -100,7 +104,7 @@ function runCommand(command) {
     // to be implemented
     // console.log(command);
 
-    postOutput(command);
+    postOutput("% " + command);
     // const contents = {message: command}
     var request = new XMLHttpRequest();
     request.open("POST", "/", true);
@@ -148,14 +152,6 @@ function onLoad() {
 
     // give console input field focus
     commandField.focus();
-
-    // demo text
-    postOutput("load os: 0");
-    postOutput("os filename: no os");
-    postOutput(".o filename: figisa4.0");
-    postOutput("scriptfilename: no script");
-    postOutput("loading figisa4.0");
-    postOutput("File figisa4.o loaded!");
 }
 
 // Set up onLoad to be called once the DOM for the page is fully loaded

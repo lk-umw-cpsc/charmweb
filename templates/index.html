@@ -5,6 +5,7 @@
         <link href="{{ url_for('static', filename='css/reset.css') }}" rel="stylesheet"/>
         <link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet"/>
         <script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
+        <script src="{{ url_for('static', filename='scripts/activestyle.js') }}"></script>
     </head>
     <body>
         <header>
@@ -29,11 +30,14 @@
                     <tr><td>&nbsp;</td></tr>
                     <tr><td>&nbsp;</td></tr>
                 </table>
-                <input type="text" id="user-input" placeholder="enter a command here"/>
+                <div id="input-container" class="input-container">
+                    <div class="input-decoration">&nbsp;%&nbsp;</div>
+                    <input type="text" id="user-input" placeholder="enter a command here"/>
+                </div>
                 <p style="text-align: center;">or</p>
                 <button type="button" id="step-button" onclick="stepPressed()">Step</button>
             </section>
-            <section>
+            <section id="instruction-container">
                 <h2>Instructions</h2>
                 <table id="instruction-table">
                     <thead>
@@ -61,7 +65,7 @@
                         <td id="instruction-address4">0x??????10</td>
                         <td id="instruction4">mod rd, rm, op2</td>
                     </tr>
-                    <tr>
+                    <tr id="current-instruction-row">
                         <td id="instruction-address5">0x??????14</td>
                         <td id="instruction5">and rd, rm, op2</td>
                     </tr>
@@ -73,7 +77,7 @@
                         <td id="instruction-address7">0x??????1C</td>
                         <td id="instruction7">eor rd, rn, op2</td>
                     </tr>
-                    <tr id="current-instruction-row">
+                    <tr>
                         <td id="instruction-address8">0x??????20</td>
                         <td id="instruction8">adc rd, rm, op2</td>
                     </tr>
@@ -85,7 +89,7 @@
                         <td id="instruction-address10">0x??????28</td>
                         <td id="instruction10">adf rd, rm, op2</td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td id="instruction-address11">0x??????2C</td>
                         <td id="instruction11">suf rd, rm, op2</td>
                     </tr>
@@ -107,7 +111,7 @@
                     </tr>
                     <tr>
                         <td id="instruction-address16">0x??????40</td>
-                        <td id="instruction16">cmp rd, op2</td>
+                        <td id="instruction16">cmp rd, op2</td> -->
                     </tr>
                 </table>
             </section>
