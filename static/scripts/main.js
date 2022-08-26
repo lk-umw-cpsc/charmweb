@@ -88,8 +88,9 @@ function callback() {
     }
 
     new_instructions = response.instruction_frame;
-    for (var i = 0; i < instructions.length; i++) {
+    for (var i = 0; i < new_instructions.length; i++) {
         var instruction = new_instructions[i];
+        console.log(i);
         instructions[i].display.innerHTML = instruction.instruction;
         instructions[i].addressDisplay.innerHTML = instruction.address;
     }
@@ -104,7 +105,7 @@ function runCommand(command) {
     // to be implemented
     // console.log(command);
 
-    postOutput("% " + command);
+    // postOutput("% " + command);
     // const contents = {message: command}
     var request = new XMLHttpRequest();
     request.open("POST", "/", true);
@@ -136,6 +137,9 @@ function onLoad() {
     });
 
     consoleTable = document.getElementById("console-table");
+    while (consoleTable.rows.length > 14) {
+        consoleTable.deleteRow(0);
+    }
     
     for (var i = 0; i < 17; i++) {
         var register = {};
@@ -143,7 +147,7 @@ function onLoad() {
         registers.push(register);
     }
 
-    for (var i = 0; i < 17; i++) {
+    for (var i = 0; i < 11; i++) {
         var instruction = {};
         instruction.addressDisplay = document.getElementById('instruction-address' + i);
         instruction.display = document.getElementById('instruction' + i);

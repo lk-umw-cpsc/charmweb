@@ -5,6 +5,7 @@ var inputDiv;
  */
  function onLoad2() {
     inputDiv = document.getElementById("input-container");
+    inputDiv.classList.add('border-highlight');
     input = document.getElementById('user-input');
     input.addEventListener('focus',  (event) => { inputDiv.classList.add('border-highlight') });
     input.addEventListener('blur', (event) => { inputDiv.classList.remove('border-highlight') });

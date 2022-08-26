@@ -195,6 +195,74 @@ int getcmd(char *buf, int nbuf);
 
 int registers_last_step[17];
 
+static PyObject *grab_output(char *command_executed) {
+    char buff[256];
+    // format is "% <command>" - %% escapes the %
+    snprintf(buff, 256, "%% %s", command_executed);
+    PyObject *output_strings = PyList_New(0);
+    if (command_executed != NULL) {
+        PyList_Append(output_strings, Py_BuildValue("s", buff));
+    }
+    for (int i = 0; i < resi; i++) {
+        PyList_Append(output_strings, Py_BuildValue("s", resvals[i]));
+    }
+    resi = 0;
+    return output_strings;
+}
+
+static PyObject *grab_updated_registers() {
+    PyObject* register_updates_list = PyList_New(0);
+
+    char hex_value[11];
+    for (int i = 0; i < 17; i++) {
+        int reg = registers[i];
+        if (reg != registers_last_step[i]) {
+            snprintf(hex_value, 11, "0x%08X", reg);
+            PyObject *reg_update = Py_BuildValue("{siss}", "register", i, "value", hex_value);
+            PyList_Append(register_updates_list, reg_update);
+            registers_last_step[i] = registers[i];
+        }
+    }
+    return register_updates_list;
+}
+
+static PyObject *grab_instructions() {
+    PyObject *instruction_list = PyList_New(0);
+    for (int i = 0; i < 11; i++) {
+        PyList_Append(instruction_list, Py_BuildValue("{ss}", "instruction", instinfo[i]));
+    }
+    // ensures the emulator outputs to the correct index on next go
+    insti = 0;
+    return instruction_list;
+}
+
+/**
+ * @brief The C implementation of the chemu.init() method
+ * 
+ * @param self The calling Python object
+ * @param args The arguments passed via the Python call to the function
+ * @return None
+ */
+static PyObject *method_init(PyObject *self, PyObject *args) {
+    for (int i = 0; i < 17; i++) {
+        registers_last_step[i] = 0;
+    }
+
+    load_memory("figisa17.o");
+    char *start = "pl";
+    do_cmd(1, &start);
+
+    // retrieve output
+    PyObject *output = grab_output("pl");
+    PyObject *updated_registers = grab_updated_registers();
+    PyObject *instructions = grab_instructions();
+
+    return Py_BuildValue("{sOsOsO}", 
+            "registers", updated_registers, 
+            "instructions", instructions,
+            "output", output);
+}
+
 /**
  * @brief The C implementation of the chemu.do(command) method
  * 
@@ -213,40 +281,23 @@ static PyObject *method_do(PyObject *self, PyObject *args) {
     strncpy(command_copy, command, 256);
     do_cmd(1, &command);
 
-    PyObject *instruction_list = PyList_New(0);
-    for (int i = 0; i < 11; i++) {
-        PyList_Append(instruction_list, Py_BuildValue("{ssss}", "instruction", instinfo[i], "address", "0xfeedabee"));
-    }
-    // ensures the emulator outputs to the correct index on next go
-    insti = 0;
+    PyObject *instruction_list = grab_instructions();
 
-    PyObject *output_strings = PyList_New(0);
-    for (int i = 0; i < resi; i++) {
-        PyList_Append(output_strings, Py_BuildValue("s", resvals[i]));
-    }
-    resi = 0;
+    PyObject *output_strings = grab_output(command);
 
-    PyObject* register_updates_list = PyList_New(0);
+    PyObject *updated_registers = grab_updated_registers();
 
-    char hex_value[11];
-    for (int i = 0; i < 17; i++) {
-        int reg = registers[i];
-        if (reg != registers_last_step[i]) {
-            snprintf(hex_value, 11, "0x%08X", reg);
-            PyObject *reg_update = Py_BuildValue("{siss}", "register", i, "value", hex_value);
-            PyList_Append(register_updates_list, reg_update);
-            registers_last_step[i] = registers[i];
-        }
-    }
-
-    PyObject *returnValue = Py_BuildValue("{sOsOsO}", "registers", register_updates_list, "instructions", instruction_list,
+    PyObject *returnValue = Py_BuildValue("{sOsOsO}", 
+            "registers", updated_registers, 
+            "instructions", instruction_list,
             "output", output_strings);
     return returnValue;
 }
 
 // Null-terminated array of methods available in the module
 static PyMethodDef chemuMethods[] = {
-    {"do", method_do, METH_VARARGS, "Python interface for Chemu"},
+    {"init", method_init, METH_VARARGS, "Initializes Chemu"},
+    {"do", method_do, METH_VARARGS, "Runs a command within Chemu"},
     {NULL, NULL, 0, NULL}
 };
 
@@ -265,13 +316,6 @@ static struct PyModuleDef chemuModule = {
  * @return PyMODINIT_FUNC An object containing the module's methods
  */
 PyMODINIT_FUNC PyInit_chemu(void) {
-
-    for (int i = 0; i < 17; i++) {
-        registers_last_step[i] = 0;
-    }
-
-    // load object file... to-do: move this to an init function
-    load_memory("figisa17.o");
     
     // return the filled-in module struct
     return PyModule_Create(&chemuModule);

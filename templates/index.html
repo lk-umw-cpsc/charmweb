@@ -29,6 +29,9 @@
                     <tr><td>&nbsp;</td></tr>
                     <tr><td>&nbsp;</td></tr>
                     <tr><td>&nbsp;</td></tr>
+                    {% for s in output %}
+                        <tr><td>{{ s }}</td></tr>
+                    {% endfor %}
                 </table>
                 <div id="input-container" class="input-container">
                     <div class="input-decoration">&nbsp;%&nbsp;</div>
@@ -44,12 +47,13 @@
                         <th id="instruction-address-col"></th>
                         <th></th>
                     </thead>
-                    
-                    <tr>
-                        <td id="instruction-address0">0x???????0</td>
-                        <td id="instruction0">add rd, rm, op2</td>
+                    {% for instruction in instructions %}
+                    <tr {% if loop.index == 6 %} id="current-instruction-row" {% endif %}>
+                        <td id="instruction-address{{loop.index - 1}}">{{ instruction['address'] }}</td>
+                        <td id="instruction{{loop.index - 1}}">{{ instruction['instruction'] }}</td>
                     </tr>
-                    <tr>
+                    {% endfor %}
+                    <!-- <tr>
                         <td id="instruction-address1">0x???????4</td>
                         <td id="instruction1">sub rd, rm, op2</td>
                     </tr>
@@ -88,7 +92,7 @@
                     <tr>
                         <td id="instruction-address10">0x??????28</td>
                         <td id="instruction10">adf rd, rm, op2</td>
-                    </tr>
+                    </tr> -->
                     <!-- <tr>
                         <td id="instruction-address11">0x??????2C</td>
                         <td id="instruction11">suf rd, rm, op2</td>
@@ -122,74 +126,12 @@
                         <th id="registers-col"></th>
                         <th></th>
                     </thead>
+                    {% for register in registers %}
                     <tr>
-                        <td>r0:</td>
-                        <td id="reg0-hex">0x00000000</td>
+                        <td>r{{ loop.index-1 }}:</td>
+                        <td id="reg{{loop.index-1}}-hex">{{ register }}</td>
                     </tr>
-                    <tr>
-                        <td>r1:</td>
-                        <td id="reg1-hex">0x00000000</td>
-                    </tr>
-                    <tr>
-                        <td>r2:</td>
-                        <td id="reg2-hex">0x00000000</td>
-                    </tr>
-                    <tr>
-                        <td>r3:</td>
-                        <td id="reg3-hex">0x00000000</td>
-                    </tr>
-                    <tr>
-                        <td>r4:</td>
-                        <td id="reg4-hex">0x00000000</td>
-                    </tr>
-                    <tr>
-                        <td>r5:</td>
-                        <td id="reg5-hex">0x00000000</td>
-                    </tr>
-                    <tr>
-                        <td>r6:</td>
-                        <td id="reg6-hex">0x00000000</td>
-                    </tr>
-                    <tr>
-                        <td>r7:</td>
-                        <td id="reg7-hex">0x00000000</td>
-                    </tr>
-                    <tr>
-                        <td>r8:</td>
-                        <td id="reg8-hex">0x00000000</td>
-                    </tr>
-                    <tr>
-                        <td>r9:</td>
-                        <td id="reg9-hex">0x00000000</td>
-                    </tr>
-                    <tr>
-                        <td>r10:</td>
-                        <td id="reg10-hex">0x00000000</td>
-                    </tr>
-                    <tr>
-                        <td>r11:</td>
-                        <td id="reg11-hex">0x00000000</td>
-                    </tr>
-                    <tr>
-                        <td>r12:</td>
-                        <td id="reg12-hex">0x00000000</td>
-                    </tr>
-                    <tr>
-                        <td>sp:</td>
-                        <td id="reg13-hex">0x00000000</td>
-                    </tr>
-                    <tr>
-                        <td>lr:</td>
-                        <td id="reg14-hex">0x00000000</td>
-                    </tr>
-                    <tr>
-                        <td>pc:</td>
-                        <td id="reg15-hex">0x00000000</td>
-                    </tr>
-                    <tr>
-                        <td>cpsr:</td>
-                        <td id="reg16-hex">0x00000000</td>
-                    </tr>
+                    {% endfor %}
                 </table>
             </section>
         </main>
