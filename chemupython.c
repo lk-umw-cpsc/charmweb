@@ -253,7 +253,7 @@ static PyObject *method_init(PyObject *self, PyObject *args) {
     do_cmd(1, &start);
 
     // retrieve output
-    PyObject *output = grab_output("pl");
+    PyObject *output = grab_output(NULL);
     PyObject *updated_registers = grab_updated_registers();
     PyObject *instructions = grab_instructions();
 

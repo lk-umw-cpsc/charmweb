@@ -26,6 +26,7 @@ def initializer():
 
     for s in result['output']:
         output.append(s)
+    output.append('% pl')
     for reg in result['registers']:
         registers[reg['register']] = reg['value']
     session['initialized'] = True
