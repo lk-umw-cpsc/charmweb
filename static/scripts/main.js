@@ -69,13 +69,15 @@ function postInstructionFrame(frame) {
  */
 function updateRegister(n, hex, base10, floating) {
     registers[n].hexDisplay.innerHTML = hex;
+    registers[n].intDisplay.innerHTML = base10;
+    registers[n].floatDisplay.innerHTML = floating;
     registers[n].hexDisplay.classList.add('active');
 }
 
 /**
  * Function called when we receive a JSON response from the Flask backend
  */
-function callback() {
+function responseReceived() {
     const response = JSON.parse(this.responseText);
 
     for (var s of response.output) {
@@ -83,17 +85,40 @@ function callback() {
     }
 
     resetRegisterColors();
-    for (var update of response.register_updates) {
-        updateRegister(update.register, update.value, 0, 0);
-    }
+    if (response.halt) {
+        postOutput("Execution halted: branch-to-self countered");
+        $("#alternate-branch-label").hide();
+        for (let i = 11; i < 16; i++) {
+            instr = instructions[i];
+            instr.display.innerHTML = '';
+            instr.addressDisplay.innerHTML = '';
+        }
+    } else {
+        if (response.branch) {
+            $("#alternate-branch-label").show();
+        } else {
+            $("#alternate-branch-label").hide();
+        }
 
-    new_instructions = response.instruction_frame;
-    for (var i = 0; i < new_instructions.length; i++) {
-        var instruction = new_instructions[i];
-        console.log(i);
-        instructions[i].display.innerHTML = instruction.instruction;
-        instructions[i].addressDisplay.innerHTML = instruction.address;
+        for (var update of response.register_updates) {
+            updateRegister(update.register, update.value, update.int, update.float);
+        }
+
+        new_instructions = response.instruction_frame;
+        for (var i = 0; i < new_instructions.length; i++) {
+            var instruction = new_instructions[i];
+            instructions[i].display.innerHTML = instruction.instruction;
+            instructions[i].addressDisplay.innerHTML = instruction.address;
+        }
     }
+}
+
+/**
+ * Function called when attempting to send the server
+ * a command fails
+ */
+function connectionFailed() {
+    postOutput("ERROR: Connection failed. Is the server up?");
 }
 
 /**
@@ -102,15 +127,11 @@ function callback() {
  * @param {*} command a string containing the command to execute
  */
 function runCommand(command) {
-    // to be implemented
-    // console.log(command);
-
-    // postOutput("% " + command);
-    // const contents = {message: command}
     var request = new XMLHttpRequest();
     request.open("POST", "/", true);
     request.setRequestHeader("Content-Type", "application/json");
-    request.onload = callback;
+    request.onload = responseReceived;
+    request.onerror = connectionFailed;
     request.send(JSON.stringify({message: command}));
 }
 
@@ -120,7 +141,7 @@ function runCommand(command) {
  */
 function postOutput(output) {
     consoleTable.deleteRow(0);
-    row = consoleTable.insertRow(-1); // -1 specifies end of table
+    var row = consoleTable.insertRow(-1); // -1 specifies end of table
     row.insertCell(0).innerHTML = output;
 }
 
@@ -144,14 +165,20 @@ function onLoad() {
     for (var i = 0; i < 17; i++) {
         var register = {};
         register.hexDisplay = document.getElementById('reg' + i + '-hex');
+        register.intDisplay = document.getElementById('reg' + i + '-int');
+        register.floatDisplay = document.getElementById('reg' + i + '-float');
         registers.push(register);
     }
 
-    for (var i = 0; i < 11; i++) {
+    for (var i = 0; i < 16; i++) {
         var instruction = {};
         instruction.addressDisplay = document.getElementById('instruction-address' + i);
         instruction.display = document.getElementById('instruction' + i);
         instructions.push(instruction);
+    }
+
+    if (instructions[11].display.innerHTML.length == 0) {
+        $("#alternate-branch-label").hide();
     }
 
     // give console input field focus

@@ -49,8 +49,8 @@ html {
 body {
     color: $font-color;
 
-    padding-top: 8pt;
-    margin: 8pt;
+    padding-top: 1vw;
+    margin: 1vw;
     background-image: linear-gradient($darkest, $mid);
     border-radius: 5px;
     border: 1px solid $mid;
@@ -66,12 +66,14 @@ h1, h2, h3 {
     font-weight: normal;
 }
 
+h2 {
+    font-size: 1.25vw;
+}
+
 #console-container {
     background-color: $console-background;
     background-image: linear-gradient($console-background-top, $console-background 20%);
     border-color: $console-border;
-    // flex: auto;
-    // width: 47%;
 }
 
 .input-container {
@@ -88,12 +90,11 @@ h1, h2, h3 {
 
 .input-decoration {
     color: $font-color;
-    font-size: 16pt;
+    font-size: 1.2vw;
 }
 
 #user-input {
     background-color: $console-background;
-    // border: 1px solid $font-color;
     border: none;
     color: $font-color;
     flex: 2;
@@ -111,9 +112,9 @@ h1, h2, h3 {
     
 }
 
-header>h1 {
+header > h1 {
     text-align: center;
-    font-size: 32pt;
+    font-size: 2.5vw;
     font-family: Urbanist;
     text-shadow: 0px 4px 8px black;
 }
@@ -122,16 +123,15 @@ main {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
-    margin-top: 12pt;
+    margin-top: 1.2vw;
 }
 
 main > section {
     width: 30%;
     border: 1px solid $light;
     border-radius: 5px;
-    padding: 8pt;
+    padding: 0.75vw;
     box-shadow: 0px 4px 8px black;
-    // margin: 0px 1.5%;
 }
 
 #current-instruction-row, .active {
@@ -146,12 +146,16 @@ main h2 {
 main input, main button {
     width: 100%;
     font-family: Cousine;
-    font-size: 16pt;
-    padding: 2px;
+    font-size: 1.2vw;
+    padding: 0.3vw;
 }
 
 #registers-col {
-    width: 10pt;
+    width: 1px;
+}
+
+#registers-int-col, #registers-float-col {
+    width: 25%;
 }
 
 #registers-table tr>td:nth-of-type(1) {
@@ -159,12 +163,24 @@ main input, main button {
     text-align: right;
 }
 
+#registers-table tr>td:nth-of-type(2) {
+    padding-left: 0.5vw;
+}
+#registers-table tr>td:nth-of-type(3),
+#registers-table tr>td:nth-of-type(4) {
+    text-align: center;
+}
+
 #instruction-address-col {
-    width: 110pt;
+    width: 1px;
 }
 
 #instruction-table tr>td:nth-of-type(1) {
     color: $light;
+}
+
+#instruction-table tr>td:nth-of-type(2) {
+    padding-left: 1vw;
 }
 
 #step-button {
@@ -190,18 +206,18 @@ main table {
 }
 
 main td {
-    font-size: 16pt;
+    font-size: 1.1vw;
 }
 
 footer {
-    padding: 8pt;
+    padding: 1vw;
     line-height: 2;
 }
 
 footer>p {
     color: $footer-font-color;
     text-align: center;
-    font-size: 10pt;
+    font-size: 0.8vw;
 }
 
 footer>p>a {

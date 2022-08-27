@@ -195,6 +195,11 @@ int getcmd(char *buf, int nbuf);
 
 int registers_last_step[17];
 
+union registerif {
+    int32_t i;
+    float f;
+};
+
 static PyObject *grab_output(char *command_executed) {
     char buff[256];
     // format is "% <command>" - %% escapes the %
@@ -215,12 +220,17 @@ static PyObject *grab_updated_registers() {
 
     char hex_value[11];
     for (int i = 0; i < 17; i++) {
-        int reg = registers[i];
-        if (reg != registers_last_step[i]) {
+        union registerif reg;
+        reg.i = registers[i];
+        if (reg.i != registers_last_step[i]) {
             snprintf(hex_value, 11, "0x%08X", reg);
-            PyObject *reg_update = Py_BuildValue("{siss}", "register", i, "value", hex_value);
+            PyObject *reg_update = Py_BuildValue("{sisssisf}", 
+                    "register", i, 
+                    "value", hex_value,
+                    "int", reg.i,
+                    "float", reg.f);
             PyList_Append(register_updates_list, reg_update);
-            registers_last_step[i] = registers[i];
+            registers_last_step[i] = reg.i;
         }
     }
     return register_updates_list;

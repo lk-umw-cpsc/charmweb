@@ -24,8 +24,8 @@ html {
 
 body {
   color: white;
-  padding-top: 8pt;
-  margin: 8pt;
+  padding-top: 1vw;
+  margin: 1vw;
   background-image: linear-gradient(#002D61, #0067A2);
   border-radius: 5px;
   border: 1px solid #0067A2;
@@ -39,6 +39,10 @@ body {
 h1, h2, h3 {
   font-family: Heebo;
   font-weight: normal;
+}
+
+h2 {
+  font-size: 1.25vw;
 }
 
 #console-container {
@@ -61,7 +65,7 @@ h1, h2, h3 {
 
 .input-decoration {
   color: white;
-  font-size: 16pt;
+  font-size: 1.2vw;
 }
 
 #user-input {
@@ -77,7 +81,7 @@ h1, h2, h3 {
 
 header > h1 {
   text-align: center;
-  font-size: 32pt;
+  font-size: 2.5vw;
   font-family: Urbanist;
   text-shadow: 0px 4px 8px black;
 }
@@ -86,14 +90,14 @@ main {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-around;
-  margin-top: 12pt;
+  margin-top: 1.2vw;
 }
 
 main > section {
   width: 30%;
   border: 1px solid #8DC9F7;
   border-radius: 5px;
-  padding: 8pt;
+  padding: 0.75vw;
   box-shadow: 0px 4px 8px black;
 }
 
@@ -109,12 +113,16 @@ main h2 {
 main input, main button {
   width: 100%;
   font-family: Cousine;
-  font-size: 16pt;
-  padding: 2px;
+  font-size: 1.2vw;
+  padding: 0.3vw;
 }
 
 #registers-col {
-  width: 10pt;
+  width: 1px;
+}
+
+#registers-int-col, #registers-float-col {
+  width: 25%;
 }
 
 #registers-table tr > td:nth-of-type(1) {
@@ -122,12 +130,25 @@ main input, main button {
   text-align: right;
 }
 
+#registers-table tr > td:nth-of-type(2) {
+  padding-left: 0.5vw;
+}
+
+#registers-table tr > td:nth-of-type(3),
+#registers-table tr > td:nth-of-type(4) {
+  text-align: center;
+}
+
 #instruction-address-col {
-  width: 110pt;
+  width: 1px;
 }
 
 #instruction-table tr > td:nth-of-type(1) {
   color: #8DC9F7;
+}
+
+#instruction-table tr > td:nth-of-type(2) {
+  padding-left: 1vw;
 }
 
 #step-button {
@@ -153,18 +174,18 @@ main table {
 }
 
 main td {
-  font-size: 16pt;
+  font-size: 1.1vw;
 }
 
 footer {
-  padding: 8pt;
+  padding: 1vw;
   line-height: 2;
 }
 
 footer > p {
   color: #8DC9F7;
   text-align: center;
-  font-size: 10pt;
+  font-size: 0.8vw;
 }
 
 footer > p > a {

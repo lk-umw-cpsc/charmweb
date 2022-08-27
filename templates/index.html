@@ -4,6 +4,7 @@
         <title>Chemu Web Interface</title>
         <link href="{{ url_for('static', filename='css/reset.css') }}" rel="stylesheet"/>
         <link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
         <script src="{{ url_for('static', filename='scripts/activestyle.js') }}"></script>
     </head>
@@ -47,76 +48,19 @@
                         <th id="instruction-address-col"></th>
                         <th></th>
                     </thead>
-                    {% for instruction in instructions %}
-                    <tr {% if loop.index == 6 %} id="current-instruction-row" {% endif %}>
-                        <td id="instruction-address{{loop.index - 1}}">{{ instruction['address'] }}</td>
-                        <td id="instruction{{loop.index - 1}}">{{ instruction['instruction'] }}</td>
-                    </tr>
-                    {% endfor %}
-                    <!-- <tr>
-                        <td id="instruction-address1">0x???????4</td>
-                        <td id="instruction1">sub rd, rm, op2</td>
-                    </tr>
-                    <tr>
-                        <td id="instruction-address2">0x???????8</td>
-                        <td id="instruction2">mul rd, rm, op2</td>
-                    </tr>
-                    <tr>
-                        <td id="instruction-address3">0x???????C</td>
-                        <td id="instruction3">div rd, rm, op2</td>
-                    </tr>
-                    <tr>
-                        <td id="instruction-address4">0x??????10</td>
-                        <td id="instruction4">mod rd, rm, op2</td>
-                    </tr>
-                    <tr id="current-instruction-row">
-                        <td id="instruction-address5">0x??????14</td>
-                        <td id="instruction5">and rd, rm, op2</td>
-                    </tr>
-                    <tr>
-                        <td id="instruction-address6">0x??????18</td>
-                        <td id="instruction6">orr rd, rm, op2</td>
-                    </tr>
-                    <tr>
-                        <td id="instruction-address7">0x??????1C</td>
-                        <td id="instruction7">eor rd, rn, op2</td>
-                    </tr>
-                    <tr>
-                        <td id="instruction-address8">0x??????20</td>
-                        <td id="instruction8">adc rd, rm, op2</td>
-                    </tr>
-                    <tr>
-                        <td id="instruction-address9">0x??????24</td>
-                        <td id="instruction9">sbc rd, rm, op2</td>
-                    </tr>
-                    <tr>
-                        <td id="instruction-address10">0x??????28</td>
-                        <td id="instruction10">adf rd, rm, op2</td>
-                    </tr> -->
-                    <!-- <tr>
-                        <td id="instruction-address11">0x??????2C</td>
-                        <td id="instruction11">suf rd, rm, op2</td>
-                    </tr>
-                    <tr>
-                        <td id="instruction-address12">0x??????30</td>
-                        <td id="instruction12">muf rd, rm, op2</td>
-                    </tr>
-                    <tr>
-                        <td id="instruction-address13">0x??????34</td>
-                        <td id="instruction13">dif rd, rm, op2</td>
-                    </tr>
-                    <tr>
-                        <td id="instruction-address14">0x??????38</td>
-                        <td id="instruction14">mov rd, op2</td>
-                    </tr>
-                    <tr>
-                        <td id="instruction-address15">0x??????3C</td>
-                        <td id="instruction15">mva rd, op2</td>
-                    </tr>
-                    <tr>
-                        <td id="instruction-address16">0x??????40</td>
-                        <td id="instruction16">cmp rd, op2</td> -->
-                    </tr>
+                    <tbody>
+                        {% for instruction in instructions %}
+                        <tr {% if loop.index == 6 %} id="current-instruction-row" {% endif %}>
+                            <td id="instruction-address{{loop.index - 1}}">{{ instruction['address'] }}</td>
+                            <td id="instruction{{loop.index - 1}}">{{ instruction['instruction'] }}</td>
+                        </tr>
+                        {% if loop.index == 11 %}
+                        <tr>
+                            <td id="alternate-branch-label" colspan="2" style="text-align: center;">Alternate Branch</td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
                 </table>
             </section>
             <section id="register-container">
@@ -125,11 +69,15 @@
                     <thead>
                         <th id="registers-col"></th>
                         <th></th>
+                        <th id="registers-int-col"></th>
+                        <th id="registers-float-col"></th>
                     </thead>
                     {% for register in registers %}
                     <tr>
-                        <td>r{{ loop.index-1 }}:</td>
-                        <td id="reg{{loop.index-1}}-hex">{{ register }}</td>
+                        <td>{{ register['name'] }}:</td>
+                        <td id="reg{{loop.index-1}}-hex">{{ register['value'] }}</td>
+                        <td id="reg{{loop.index-1}}-int">{{ register['int'] }}</td>
+                        <td id="reg{{loop.index-1}}-float">{{ register['float'] }}</td>
                     </tr>
                     {% endfor %}
                 </table>
