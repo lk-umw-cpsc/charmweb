@@ -10,6 +10,13 @@ app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'memcached'
 app.config['SECRET_KEY'] = 'super secret key'
 
+def init_flags():
+    names = ['os', 'n', 'z', 'c', 'u', 'v']
+    flags = {}
+    for name in names:
+        flags[name] = 0
+    return names
+
 def init_regs():
     names = ['r'] * 13 + ['sp', 'lr', 'pc', 'cpsr']
     for i in range(13):
@@ -25,6 +32,11 @@ def init_regs():
         print(reg)
         regs.append(reg)
     return regs
+
+def update_flags(flags_update):
+    flags = session['flags']
+    for update in flags_update:
+        flags[update['name']] = update['value']
 
 def update_registers(regs):
     registers = session['registers']
@@ -42,6 +54,7 @@ def update_registers(regs):
         register['value'] = hexval
     return registers
 
+# breaks instruction output into instruction updates for the web ui
 def parse_instructions(instrs):
     for i, instruction_listing in enumerate(instrs):
         addr = instruction_listing['instruction'][:10]
@@ -73,10 +86,17 @@ def parse_instructions(instrs):
 # method called when the app starts
 @app.before_first_request
 def initializer():
+    # initialize the emulator
     result = chemu.init()
+
     instructions, branch = parse_instructions(result['instructions'])
+    
     session['instructions'] = instructions
     registers = session['registers'] = init_regs()
+
+    session['flags'] = init_flags()
+    update_flags(result['flags'])
+
     output = session['output'] = []
 
     for s in result['output']:
@@ -111,17 +131,23 @@ def home():
                 output.append(s)
             instructions, branch = parse_instructions(result['instructions'])
             session['instructions'] = instructions
-        print(result['registers'])
+        print(result['flags'])
         return jsonify(register_updates=result['registers'], 
                 instruction_frame=result['instructions'], 
                 output=result['output'], 
                 halt=branch_to_self, 
-                branch=branch)
+                branch=branch,
+                flags=result['flags'])
     else:
         instructions = session['instructions']
+        # make branch area blank if not on a branch instruction
         fill = 16 - len(instructions)
         for i in range(fill):
             instructions.append({ 'address': '', 'instruction': '' })
+
         registers = session['registers']
         output = session['output']
-        return render_template('index.html', registers=registers, instructions=instructions, output=output)
+        return render_template('index.html', 
+                registers=registers, 
+                instructions=instructions, 
+                output=output)

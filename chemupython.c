@@ -195,10 +195,62 @@ int getcmd(char *buf, int nbuf);
 
 int registers_last_step[17];
 
+union cpsr_bits {
+    int32_t n : 1;
+    int32_t z : 1;
+    int32_t c : 1;
+    int32_t v : 1;
+    int32_t u : 1;
+    int32_t unused : 25;
+    int32_t os : 1;
+    int32_t unused2 : 1;
+};
+
+#define NUM_FLAGS 6
+
+char *flag_names[] = {
+    "os",
+    "u",
+    "v",
+    "c",
+    "z",
+    "n"
+};
+
+#define gen_mask(a) (1 << a)
+
+uint32_t flag_masks[] = {
+    gen_mask(1),
+    gen_mask(27),
+    gen_mask(28),
+    gen_mask(29),
+    gen_mask(30),
+    gen_mask(31)
+};
+
+static PyObject *grab_flag_updates() {
+    PyObject *flags = PyList_New(0);
+    for (int i = 0; i < NUM_FLAGS; i++) {
+        uint32_t mask = flag_masks[i];
+        uint32_t bit = ((uint32_t) cpsr) & mask;
+        if (bit != (((uint32_t) registers_last_step[16]) & mask)) {
+            uint32_t value = bit != 0;
+            PyObject *reg_update = Py_BuildValue("{sssi}",
+                    "flag", flag_names[i],
+                    "value", value); 
+            PyList_Append(flags, reg_update);
+        }
+    }
+    return flags;
+}
+
 union registerif {
     int32_t i;
     float f;
+    union cpsr_bits bits;
 };
+
+union cpsr_bits flags;
 
 static PyObject *grab_output(char *command_executed) {
     char buff[256];
@@ -264,13 +316,15 @@ static PyObject *method_init(PyObject *self, PyObject *args) {
 
     // retrieve output
     PyObject *output = grab_output(NULL);
+    PyObject *flag_updates = grab_flag_updates();
     PyObject *updated_registers = grab_updated_registers();
     PyObject *instructions = grab_instructions();
 
-    return Py_BuildValue("{sOsOsO}", 
+    return Py_BuildValue("{sOsOsOsO}", 
             "registers", updated_registers, 
             "instructions", instructions,
-            "output", output);
+            "output", output,
+            "flags", flag_updates);
 }
 
 /**
@@ -286,21 +340,35 @@ static PyObject *method_do(PyObject *self, PyObject *args) {
         return NULL;
     }
 
-    // we now know what the user sent over...
     char command_copy[256];
     strncpy(command_copy, command, 256);
-    do_cmd(1, &command);
+
+    char *command_args[10];
+    char *s = command;
+    char *es = s + strlen(s);
+    char *str;
+    int argc = 0;
+    cmdargv[0] = ""; // prevent seg fault when first cmd is empty line
+    while (argc < 9 && cmdgetstr(&s, es, &str) != 0) {
+        cmdargv[argc] = str;
+        argc++;
+    }
+    cmdargv[argc] = NULL;
+    do_cmd(argc, &cmdargv);
 
     PyObject *instruction_list = grab_instructions();
 
-    PyObject *output_strings = grab_output(command);
+    PyObject *output_strings = grab_output(command_copy);
+
+    PyObject *flag_updates = grab_flag_updates();
 
     PyObject *updated_registers = grab_updated_registers();
 
-    PyObject *returnValue = Py_BuildValue("{sOsOsO}", 
+    PyObject *returnValue = Py_BuildValue("{sOsOsOsO}", 
             "registers", updated_registers, 
             "instructions", instruction_list,
-            "output", output_strings);
+            "output", output_strings,
+            "flags", flag_updates);
     return returnValue;
 }
 
