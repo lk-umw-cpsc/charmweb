@@ -42,16 +42,6 @@ function stepPressed() {
 }
 
 /**
- * Resets the color of all the registers in the display
- * (a highlight is applied to registers changed in the previos step)
- */
-function resetRegisterColors() {
-    for (var register of registers) {
-        register.hexDisplay.classList.remove('active');
-    }
-}
-
-/**
  * Updates the instruction display with a frame of data
  * received by the server
  * @param {*} frame 
@@ -61,6 +51,16 @@ function postInstructionFrame(frame) {
         var instruction = instructions[i];
         instruction.display.innerHTML = frame[i].assembly;
         instruction.addressDisplay.innerHTML = frame[i].address;
+    }
+}
+
+/**
+ * Resets the color of all the registers in the display
+ * (a highlight is applied to registers changed in the previos step)
+ */
+function resetRegisterColors() {
+    for (var register of registers) {
+        register.hexDisplay.classList.remove('active');
     }
 }
 
@@ -113,6 +113,19 @@ function responseReceived() {
             var instruction = new_instructions[i];
             instructions[i].display.innerHTML = instruction.instruction;
             instructions[i].addressDisplay.innerHTML = instruction.address;
+        }
+
+        let flag_spans = document.querySelectorAll("#registers-table tr td span");
+        for (let span of flag_spans) {
+            span.classList.remove("active");
+        }
+
+        let flag_updates = response.flags;
+        for (let i = 0; i < flag_updates.length; i++) {
+            console.log(flag_updates[i]);
+            let ele = document.getElementById("flag-" + flag_updates[i].flag);
+            ele.innerHTML = flag_updates[i].value;
+            ele.classList.add("active");
         }
     }
 }

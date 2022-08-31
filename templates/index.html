@@ -83,7 +83,7 @@
                     {% endfor %}
                     <tr>
                         <td>flags:</td>
-                        <td id="reg16-hex" colspan="3">{% for flag in flags %} {{ flag['flag'] }}: {{ flag['value'] }} {% endfor %}</td>
+                        <td id="flags-cell" colspan="3">{% for flag in flag_names %} {{ flag }}: <span id="flag-{{ flag }}">{{ flags[flag] }}</span> {% endfor %}</td>
                     </tr>
                 </table>
             </section>

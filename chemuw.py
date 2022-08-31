@@ -11,11 +11,12 @@ app.config['SESSION_TYPE'] = 'memcached'
 app.config['SECRET_KEY'] = 'super secret key'
 
 def init_flags():
-    names = ['os', 'n', 'z', 'c', 'u', 'v']
+    names = ['n', 'z', 'c', 'u', 'v', 'os']
+    session['flag_names'] = names
     flags = {}
     for name in names:
         flags[name] = 0
-    return names
+    return flags
 
 def init_regs():
     names = ['r'] * 13 + ['sp', 'lr', 'pc', 'cpsr']
@@ -150,4 +151,6 @@ def home():
         return render_template('index.html', 
                 registers=registers, 
                 instructions=instructions, 
-                output=output)
+                output=output,
+                flags=session['flags'],
+                flag_names=session['flag_names'])
