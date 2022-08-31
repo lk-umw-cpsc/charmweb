@@ -76,6 +76,21 @@ h2 {
     border-color: $console-border;
 }
 
+#table-wrapper {
+    overflow-y: auto;
+    height: 22vw;
+}
+
+#table-wrapper::-webkit-scrollbar {
+  background-color: $console-background;
+  width: 3px;
+//   height: 8px;
+}
+
+#table-wrapper::-webkit-scrollbar-thumb {
+    background: $console-border;
+  }
+
 .input-container {
     display: flex;
     align-items: center;

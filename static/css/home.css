@@ -51,6 +51,20 @@ h2 {
   border-color: #4A5156;
 }
 
+#table-wrapper {
+  overflow-y: auto;
+  height: 22vw;
+}
+
+#table-wrapper::-webkit-scrollbar {
+  background-color: black;
+  width: 3px;
+}
+
+#table-wrapper::-webkit-scrollbar-thumb {
+  background: #4A5156;
+}
+
 .input-container {
   display: flex;
   align-items: center;

@@ -4,8 +4,12 @@
  */
 var commandField;
 var consoleTable;
+var consoleTableWrapper;
 var registers = [];
 var instructions = [];
+
+var numConsoleDummies = 14;
+var numDummiesRemoved = 0;
 
 /*
 JSON format:
@@ -140,9 +144,13 @@ function runCommand(command) {
  * @param {*} output The string to post
  */
 function postOutput(output) {
-    consoleTable.deleteRow(0);
+    if (numDummiesRemoved < numConsoleDummies) {
+        consoleTable.deleteRow(0);
+        numDummiesRemoved++;
+    }
     var row = consoleTable.insertRow(-1); // -1 specifies end of table
     row.insertCell(0).innerHTML = output;
+    row.scrollIntoView();
 }
 
 /**
@@ -158,9 +166,14 @@ function onLoad() {
     });
 
     consoleTable = document.getElementById("console-table");
-    while (consoleTable.rows.length > 14) {
+    consoleTableWrapper = document.getElementById("table-wrapper");
+    while (consoleTable.rows.length > numConsoleDummies && numDummiesRemoved < numConsoleDummies) {
         consoleTable.deleteRow(0);
+        numDummiesRemoved++;
     }
+    consoleTable.rows[consoleTable.rows.length - 1].scrollIntoView();
+    // let consoleTableHeight = consoleTableWrapper.offsetHeight;
+    // consoleTableWrapper.style.height = consoleTableHeight + 'px';
     
     for (var i = 0; i < 17; i++) {
         var register = {};
