@@ -1,7 +1,8 @@
 from math import isnan
 from mimetypes import init
 from urllib import request
-from flask import Flask, render_template, jsonify, request, session
+from flask import Flask, render_template, jsonify, request, session, redirect, url_for
+import time
 
 import chemu
 
@@ -9,6 +10,9 @@ app = Flask(__name__)
 
 app.config['SESSION_TYPE'] = 'memcached'
 app.config['SECRET_KEY'] = 'super secret key'
+
+app.config['UPLOAD_FOLDER'] = "/uploads"
+app.config['MAX_CONTENT_PATH'] = 65536
 
 def init_flags():
     names = ['n', 'z', 'c', 'u', 'v', 'os']
@@ -84,11 +88,15 @@ def parse_instructions(instrs):
         instrs.append({ 'address': '', 'instruction': '' })
     return instrs, branch
 
-# method called when the app starts
 @app.before_first_request
-def initializer():
+def session_init():
+    session['initialized'] = False
+
+# method called when the app starts
+# @app.before_first_request
+def init(input_filename, os_filename):
     # initialize the emulator
-    result = chemu.init()
+    result = chemu.init(input_filename, os_filename)
 
     instructions, branch = parse_instructions(result['instructions'])
     
@@ -105,6 +113,19 @@ def initializer():
     output.append('% pl')
     update_registers(result['registers'])
     session['initialized'] = True
+
+@app.route('/init', methods=['GET', 'POST'])
+def pick_files():
+    if request.method == 'GET':
+        return render_template('filepicker.html')
+    elif request.method == "POST":
+        f = request.files['input-file']
+        fname = f.filename
+        f.save('uploads/' + fname)
+        # f.close()
+        # time.sleep(1)
+        init(fname, '')
+        return redirect('/')
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -133,24 +154,28 @@ def home():
             instructions, branch = parse_instructions(result['instructions'])
             session['instructions'] = instructions
         print(result['flags'])
-        return jsonify(register_updates=result['registers'], 
+        return jsonify(
+                register_updates=result['registers'], 
                 instruction_frame=result['instructions'], 
                 output=result['output'], 
                 halt=branch_to_self, 
                 branch=branch,
                 flags=result['flags'])
     else:
-        instructions = session['instructions']
-        # make branch area blank if not on a branch instruction
-        fill = 16 - len(instructions)
-        for i in range(fill):
-            instructions.append({ 'address': '', 'instruction': '' })
+        if 'initialized' not in session or session['initialized'] != True:
+            return redirect('/init')
+        else:
+            instructions = session['instructions']
+            # make branch area blank if not on a branch instruction
+            fill = 16 - len(instructions)
+            for i in range(fill):
+                instructions.append({ 'address': '', 'instruction': '' })
 
-        registers = session['registers']
-        output = session['output']
-        return render_template('index.html', 
-                registers=registers, 
-                instructions=instructions, 
-                output=output,
-                flags=session['flags'],
-                flag_names=session['flag_names'])
+            registers = session['registers']
+            output = session['output']
+            return render_template('index.html', 
+                    registers=registers, 
+                    instructions=instructions, 
+                    output=output,
+                    flags=session['flags'],
+                    flag_names=session['flag_names'])

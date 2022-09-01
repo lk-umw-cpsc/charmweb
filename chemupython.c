@@ -306,11 +306,15 @@ static PyObject *grab_instructions() {
  * @return None
  */
 static PyObject *method_init(PyObject *self, PyObject *args) {
+    char *input_file, *os_file;
+    if (!PyArg_ParseTuple(args, "ss", &input_file, &os_file)) {
+        return NULL;
+    }
     for (int i = 0; i < 17; i++) {
         registers_last_step[i] = 0;
     }
 
-    load_memory("figisa17.o");
+    load_memory(input_file);
     char *start = "pl";
     do_cmd(1, &start);
 
