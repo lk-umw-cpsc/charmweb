@@ -314,6 +314,13 @@ static PyObject *method_init(PyObject *self, PyObject *args) {
         registers_last_step[i] = 0;
     }
 
+    if (os_file != NULL && strlen(os_file) > 0) {
+        load_memory(os_file);
+        set_cpsr(OS);
+        set_cpsr(U);
+        set_rupt(0x7ff0);
+    }
+
     load_memory(input_file);
     char *start = "pl";
     do_cmd(1, &start);

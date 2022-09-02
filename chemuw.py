@@ -26,7 +26,6 @@ def init_regs():
     names = ['r'] * 13 + ['sp', 'lr', 'pc', 'cpsr']
     for i in range(13):
         names[i] += str(i)
-    print(names)
     regs = []
     for name in names:
         reg = {}
@@ -34,14 +33,13 @@ def init_regs():
         reg['int'] = 0
         reg['float'] = 0.0
         reg['name'] = name
-        print(reg)
         regs.append(reg)
     return regs
 
 def update_flags(flags_update):
     flags = session['flags']
     for update in flags_update:
-        flags[update['name']] = update['value']
+        flags[update['flag']] = update['value']
 
 def update_registers(regs):
     registers = session['registers']
@@ -88,13 +86,12 @@ def parse_instructions(instrs):
         instrs.append({ 'address': '', 'instruction': '' })
     return instrs, branch
 
+# method called when the app starts
 @app.before_first_request
 def session_init():
     session['initialized'] = False
 
-# method called when the app starts
-# @app.before_first_request
-def init(input_filename, os_filename):
+def init_chemu(input_filename, os_filename):
     # initialize the emulator
     result = chemu.init(input_filename, os_filename)
 
@@ -122,9 +119,7 @@ def pick_files():
         f = request.files['input-file']
         fname = f.filename
         f.save('uploads/' + fname)
-        # f.close()
-        # time.sleep(1)
-        init(fname, '')
+        init_chemu(fname, 'os.o')
         return redirect('/')
 
 @app.route('/', methods=['GET', 'POST'])
@@ -142,23 +137,27 @@ def home():
         result = chemu.do(message)
 
         registers = update_registers(result['registers'])
+
+        for s in result['output']:
+            output.append(s)
         
-        branch_to_self = False
+        halted = False
         if not result['registers']:
             # registers is empty if branch to self occurred
-            branch_to_self = True
+            halted = True
             branch = False
+            if result['output'][-1].startswith("Illegal instruction:"):
+                pass
+            elif message[0] == 's':
+                output.append('Execution halted: branch to self')
         else:
-            for s in result['output']:
-                output.append(s)
             instructions, branch = parse_instructions(result['instructions'])
             session['instructions'] = instructions
-        print(result['flags'])
         return jsonify(
                 register_updates=result['registers'], 
                 instruction_frame=result['instructions'], 
                 output=result['output'], 
-                halt=branch_to_self, 
+                halt=halted, 
                 branch=branch,
                 flags=result['flags'])
     else:

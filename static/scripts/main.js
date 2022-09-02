@@ -90,7 +90,6 @@ function responseReceived() {
 
     resetRegisterColors();
     if (response.halt) {
-        postOutput("Execution halted: branch-to-self countered");
         $("#alternate-branch-label").hide();
         for (let i = 11; i < 16; i++) {
             instr = instructions[i];
@@ -122,7 +121,6 @@ function responseReceived() {
 
         let flag_updates = response.flags;
         for (let i = 0; i < flag_updates.length; i++) {
-            console.log(flag_updates[i]);
             let ele = document.getElementById("flag-" + flag_updates[i].flag);
             ele.innerHTML = flag_updates[i].value;
             ele.classList.add("active");
