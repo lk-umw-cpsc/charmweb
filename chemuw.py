@@ -124,35 +124,35 @@ def pick_files():
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
+    if 'initialized' not in session or session['initialized'] != True:
+        return redirect('/init')
     # we receive POST if the user sent a command using the web interface, 
     #   GET if they simply loaded the page in their browser
     if request.method == 'POST':
         output = session['output']
 
-        message = request.get_json()['message']
+        command = request.get_json()['message']
 
         # cap command to 32 characters (don't need massive strings)
-        if len(message) > 32:
+        if len(command) > 32:
             s = s[:32]
-        result = chemu.do(message)
+        result = chemu.do(command)
 
         registers = update_registers(result['registers'])
-
-        for s in result['output']:
-            output.append(s)
-        
+        branch = False
         halted = False
-        if not result['registers']:
-            # registers is empty if branch to self occurred
+        if not result['registers'] and command[0] == 's':
+            # emulator halted if no registers were updated
             halted = True
-            branch = False
-            if result['output'][-1].startswith("Illegal instruction:"):
-                pass
-            elif message[0] == 's':
-                output.append('Execution halted: branch to self')
+            # try to detect branch-to-self (may be overzealous and catch false positives)
+            if not result['output'][-1].startswith("Illegal instruction:"):
+                result['output'].append('Execution halted: branch to self')
         else:
             instructions, branch = parse_instructions(result['instructions'])
             session['instructions'] = instructions
+        for s in result['output']:
+            output.append(s)
+        session['output'] = output
         return jsonify(
                 register_updates=result['registers'], 
                 instruction_frame=result['instructions'], 
@@ -161,20 +161,19 @@ def home():
                 branch=branch,
                 flags=result['flags'])
     else:
-        if 'initialized' not in session or session['initialized'] != True:
-            return redirect('/init')
-        else:
-            instructions = session['instructions']
-            # make branch area blank if not on a branch instruction
-            fill = 16 - len(instructions)
-            for i in range(fill):
-                instructions.append({ 'address': '', 'instruction': '' })
+        # user loaded the webpage
+        instructions = session['instructions']
+        # make branch area blank if not on a branch instruction
+        fill = 16 - len(instructions)
+        for i in range(fill):
+            instructions.append({ 'address': '', 'instruction': '' })
 
-            registers = session['registers']
-            output = session['output']
-            return render_template('index.html', 
-                    registers=registers, 
-                    instructions=instructions, 
-                    output=output,
-                    flags=session['flags'],
-                    flag_names=session['flag_names'])
+        registers = session['registers']
+        output = session['output']
+        print(output)
+        return render_template('index.html', 
+                registers=registers, 
+                instructions=instructions, 
+                output=output,
+                flags=session['flags'],
+                flag_names=session['flag_names'])
