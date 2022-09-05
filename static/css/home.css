@@ -58,7 +58,7 @@ h2 {
 
 #table-wrapper::-webkit-scrollbar {
   background-color: black;
-  width: 3px;
+  width: 0.3vw;
 }
 
 #table-wrapper::-webkit-scrollbar-thumb {
@@ -71,6 +71,7 @@ h2 {
   border: 1px solid #4A5156;
   border-radius: 5px;
   width: 100%;
+  margin-top: 0.5vw;
 }
 
 .border-highlight {
