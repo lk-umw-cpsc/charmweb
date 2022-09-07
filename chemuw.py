@@ -131,7 +131,7 @@ def home():
     if request.method == 'POST':
         output = session['output']
 
-        command = request.get_json()['message']
+        command = request.get_json()['command']
 
         # cap command to 32 characters (don't need massive strings)
         if len(command) > 32:
@@ -141,12 +141,24 @@ def home():
         registers = update_registers(result['registers'])
         branch = False
         halted = False
+        dump = []
         if not result['registers'] and command[0] == 's':
             # emulator halted if no registers were updated
             halted = True
             # try to detect branch-to-self (may be overzealous and catch false positives)
             if not result['output'][-1].startswith("Illegal instruction:"):
                 result['output'].append('Execution halted: branch to self')
+        elif command[0] == 'd':
+            # dump countered
+            dump_raw = result['output'][1:]
+            result['output'] = result['output'][:1]
+            for line in dump_raw:
+                addr, addr_dec, val0, val4, val8, valc = line.split()
+                dump_row = {}
+                dump_row['address'] = addr
+                dump_row['values'] = [val0, val4, val8, valc]
+                dump.append(dump_row)
+            halted = True
         else:
             instructions, branch = parse_instructions(result['instructions'])
             session['instructions'] = instructions
@@ -159,7 +171,8 @@ def home():
                 output=result['output'], 
                 halt=halted, 
                 branch=branch,
-                flags=result['flags'])
+                flags=result['flags'],
+                dump=dump)
     else:
         # user loaded the webpage
         instructions = session['instructions']

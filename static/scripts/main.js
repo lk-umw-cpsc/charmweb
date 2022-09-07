@@ -8,6 +8,20 @@ var consoleTableWrapper;
 var registers = [];
 var instructions = [];
 
+var dumpTable = new Array(8);
+var dumpPopup;
+
+class DumpTableRow {
+    constructor(row) {
+        this.address = $("#dump-addr" + row)[0];
+        this.values = new Array(4);
+        this.values[0] = $("#dump-value" + row + "-0")[0];
+        this.values[1] = $("#dump-value" + row + "-1")[0];
+        this.values[2] = $("#dump-value" + row + "-2")[0];
+        this.values[3] = $("#dump-value" + row + "-3")[0];
+    }
+}
+
 var numConsoleDummies = 14;
 var numDummiesRemoved = 0;
 
@@ -21,6 +35,14 @@ frame data is placed in the table
 register updates frame contains at least one register object
 each register object has an index (0-16) and three strings: hex, integer, fp
 */
+
+/**
+ * Function called when the "close" button is pressed within
+ * the dump popup window
+ */
+ function hideDumpWindow() {
+    dumpPopup.style.display = "none";
+}
 
 /**
  * Function called when user presses Enter within the input field
@@ -96,6 +118,17 @@ function responseReceived() {
             instr.display.innerHTML = '';
             instr.addressDisplay.innerHTML = '';
         }
+        let dump = response.dump;
+        if (dump.length > 0) {
+            dumpPopup.style.display = "block";
+            for (let i = 0; i < dump.length; i++) {
+                dumpTable[i].address.innerHTML = dump[i].address;
+                let values = dump[i].values;
+                for (let v = 0; v < values.length; v++) {
+                    dumpTable[i].values[v].innerHTML = values[v];
+                }
+            }
+        }
     } else {
         if (response.branch) {
             $("#alternate-branch-label").show();
@@ -147,7 +180,7 @@ function runCommand(command) {
     request.setRequestHeader("Content-Type", "application/json");
     request.onload = responseReceived;
     request.onerror = connectionFailed;
-    request.send(JSON.stringify({message: command}));
+    request.send(JSON.stringify({command: command}));
 }
 
 /**
@@ -204,6 +237,12 @@ function onLoad() {
     if (instructions[11].display.innerHTML.length == 0) {
         $("#alternate-branch-label").hide();
     }
+
+    for (var i = 0; i < dumpTable.length; i++) {
+        dumpTable[i] = new DumpTableRow(i);
+    }
+
+    dumpPopup = $("#dump-window")[0];
 
     // give console input field focus
     commandField.focus();

@@ -155,7 +155,7 @@ main > section {
     text-shadow: 0px 0px 4px black;
 }
 
-main h2 {
+h2 {
     text-align: center;
 }
 
@@ -238,4 +238,32 @@ footer > p {
 
 footer > p > a {
     color: $footer-link-color;
+}
+
+.dump-window {
+    z-index: 1;
+    position: fixed;
+    
+    background-image: linear-gradient($console-background-top, $console-background);
+    border-radius: 5px;
+    border: 1px solid $console-border;
+    box-shadow: 0px 4px 8px black;
+    padding: 1vw;
+    left: 24vw;
+    top: 10vw;
+
+    display: none;
+}
+
+.dump-window table {
+    width: 50vw;
+}
+
+#dump-hide-button {
+    color: $console-border;
+}
+
+#dump-hide-button:hover {
+    color: $font-color;
+    text-decoration: none;
 }

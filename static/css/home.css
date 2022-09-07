@@ -121,7 +121,7 @@ main > section {
   text-shadow: 0px 0px 4px black;
 }
 
-main h2 {
+h2 {
   text-align: center;
 }
 
@@ -205,6 +205,32 @@ footer > p {
 
 footer > p > a {
   color: white;
+}
+
+.dump-window {
+  z-index: 1;
+  position: fixed;
+  background-image: linear-gradient(rgb(20, 20, 20), black);
+  border-radius: 5px;
+  border: 1px solid #4A5156;
+  box-shadow: 0px 4px 8px black;
+  padding: 1vw;
+  left: 24vw;
+  top: 10vw;
+  display: none;
+}
+
+.dump-window table {
+  width: 50vw;
+}
+
+#dump-hide-button {
+  color: #4A5156;
+}
+
+#dump-hide-button:hover {
+  color: white;
+  text-decoration: none;
 }
 
 /*# sourceMappingURL=home.css.map */

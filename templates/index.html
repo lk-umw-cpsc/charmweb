@@ -4,11 +4,85 @@
         <title>Chemu Web Interface</title>
         <link href="{{ url_for('static', filename='css/reset.css') }}" rel="stylesheet"/>
         <link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet"/>
+        
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
         <script src="{{ url_for('static', filename='scripts/activestyle.js') }}"></script>
     </head>
     <body>
+        <div id="dump-window" class="dump-window">
+            <div id="hide-button-container">
+                <a href="#" id="dump-hide-button" onclick="hideDumpWindow()">&times;</a>
+            </div>
+            <h2>Memory Dump</h2>
+            <table>
+                <thead>
+                    <th>Address</th>
+                    <th>+0x0</th>
+                    <th>+0x4</th>
+                    <th>+0x8</th>
+                    <th>+0xC</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="dump-addr0">0x----</td>
+                        <td id="dump-value0-0">0x--------</td>
+                        <td id="dump-value0-1">0x--------</td>
+                        <td id="dump-value0-2">0x--------</td>
+                        <td id="dump-value0-3">0x--------</td>
+                    </tr>
+                    <tr>
+                        <td id="dump-addr1">0x----</td>
+                        <td id="dump-value1-0">0x--------</td>
+                        <td id="dump-value1-1">0x--------</td>
+                        <td id="dump-value1-2">0x--------</td>
+                        <td id="dump-value1-3">0x--------</td>
+                    </tr>
+                    <tr>
+                        <td id="dump-addr2">0x----</td>
+                        <td id="dump-value2-0">0x--------</td>
+                        <td id="dump-value2-1">0x--------</td>
+                        <td id="dump-value2-2">0x--------</td>
+                        <td id="dump-value2-3">0x--------</td>
+                    </tr>
+                    <tr>
+                        <td id="dump-addr3">0x----</td>
+                        <td id="dump-value3-0">0x--------</td>
+                        <td id="dump-value3-1">0x--------</td>
+                        <td id="dump-value3-2">0x--------</td>
+                        <td id="dump-value3-3">0x--------</td>
+                    </tr>
+                    <tr>
+                        <td id="dump-addr4">0x----</td>
+                        <td id="dump-value4-0">0x--------</td>
+                        <td id="dump-value4-1">0x--------</td>
+                        <td id="dump-value4-2">0x--------</td>
+                        <td id="dump-value4-3">0x--------</td>
+                    </tr>
+                    <tr>
+                        <td id="dump-addr5">0x----</td>
+                        <td id="dump-value5-0">0x--------</td>
+                        <td id="dump-value5-1">0x--------</td>
+                        <td id="dump-value5-2">0x--------</td>
+                        <td id="dump-value5-3">0x--------</td>
+                    </tr>
+                    <tr>
+                        <td id="dump-addr6">0x----</td>
+                        <td id="dump-value6-0">0x--------</td>
+                        <td id="dump-value6-1">0x--------</td>
+                        <td id="dump-value6-2">0x--------</td>
+                        <td id="dump-value6-3">0x--------</td>
+                    </tr>
+                    <tr>
+                        <td id="dump-addr7">0x----</td>
+                        <td id="dump-value7-0">0x--------</td>
+                        <td id="dump-value7-1">0x--------</td>
+                        <td id="dump-value7-2">0x--------</td>
+                        <td id="dump-value7-3">0x--------</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <header>
             <h1>Chemu <span class="highlight">Web Interface</span></h1>
         </header>
