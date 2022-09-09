@@ -53,6 +53,7 @@ h2 {
 
 #table-wrapper {
   overflow-y: auto;
+  height: 21.5vw;
 }
 
 #table-wrapper::-webkit-scrollbar {
@@ -113,6 +114,7 @@ main > section {
   border-radius: 5px;
   padding: 0.75vw;
   box-shadow: 0px 4px 8px black;
+  height: 30vw;
 }
 
 #current-instruction-row, .active {
@@ -230,6 +232,11 @@ footer > p > a {
 #dump-hide-button:hover {
   color: white;
   text-decoration: none;
+}
+
+.or {
+  text-align: center;
+  font-size: 1.2vw;
 }
 
 /*# sourceMappingURL=home.css.map */

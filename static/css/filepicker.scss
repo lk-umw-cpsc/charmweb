@@ -28,7 +28,7 @@ body {
     border-radius: 0.5vw;
     border: 1px solid t.$mid;
     height: fit-content;
-    padding: 2vw 4vw;
+    padding: 2vw 8vw;
 }
 
 h1 {
@@ -36,12 +36,8 @@ h1 {
     text-align: center;
 }
 
-h1, h2, p, input[type=file] {
+h1, h2, p, input[type=file], label {
     text-shadow: 0px 4px 8px black;
-}
-
-input {
-    display: block;
 }
 
 form {
@@ -51,14 +47,25 @@ form {
     margin-top: 1.5vw;
     border-radius: 0.5vw;
     box-shadow: 0px 4px 8px black;
+    display: block;
 }
 
-input, input::file-selector-button {
+label {
+    display: inline;
+}
+
+input, input::file-selector-button, label {
     font-family: Heebo;
     font-size: 1.25vw;
 }
 
-input {
+// input[type=file]::file-selector-button,  input[type=submit] {
+//     background-color: t.$mid;
+//     color: t.$font-color;
+//     border: 1px solid t.$light;
+// }
+
+input[type=file], input[type=submit] {
     width: 100%;
 }
 
@@ -75,7 +82,7 @@ form > p {
     margin-bottom: 1vw;
 }
 
-label, h2 {
+h2 {
     font-size: 1.75vw;
 }
 

@@ -116,10 +116,20 @@ def pick_files():
     if request.method == 'GET':
         return render_template('filepicker.html')
     elif request.method == "POST":
+        os = request.form['os-choice']
+        print(os)
+        if os == 'none':
+            os = None
+        elif os == 'default':
+            os = 'os.o'
+        else:
+            os_file = request.files['os-file']
+            os = 'uploads/' + os_file.filename
+            os_file.save(os)
         f = request.files['input-file']
-        fname = f.filename
-        f.save('uploads/' + fname)
-        init_chemu(fname, 'os.o')
+        fname = 'uploads/' + f.filename
+        f.save(fname)
+        init_chemu(fname, os)
         return redirect('/')
 
 @app.route('/', methods=['GET', 'POST'])

@@ -307,9 +307,11 @@ static PyObject *grab_instructions() {
  */
 static PyObject *method_init(PyObject *self, PyObject *args) {
     char *input_file, *os_file;
-    if (!PyArg_ParseTuple(args, "ss", &input_file, &os_file)) {
+    // z so os_file can be None
+    if (!PyArg_ParseTuple(args, "sz", &input_file, &os_file)) {
         return NULL;
     }
+
     for (int i = 0; i < 17; i++) {
         registers_last_step[i] = 0;
     }
@@ -365,7 +367,12 @@ static PyObject *method_do(PyObject *self, PyObject *args) {
         argc++;
     }
     cmdargv[argc] = NULL;
-    do_cmd(argc, &cmdargv);
+    if (cmdargv[0][0] == '>') {
+        cmdargv[0] = &cmdargv[0][1];
+        do_script(cmdargv[0]);
+    } else {
+        do_cmd(argc, &cmdargv);
+    }
 
     PyObject *instruction_list = grab_instructions();
 
