@@ -4,26 +4,11 @@ Note that this is a sass CSS file; use "sass home.scss home.css" to build home.c
 The colors below are inserted into the .css file.
 This will make theming/color tweaks easier
 **/
-$page-background-color: #111;
 
-$font-color: white;
-$footer-font-color: #8DC9F7;
-$footer-link-color: white;
 
-$darkest: #002D61;
-$mid: #0067A2;
-$light: #8DC9F7;
+// t.$active-instruction-color: 
 
-$button-hover-color: #004c79;
-$button-press-color: #002D61;
-
-$console-border: #4A5156;
-$console-background: black;
-$console-background-top: rgb(20, 20, 20);
-
-// $active-instruction-color: 
-
-$highlight: #F7BF0A;
+@use 'theme' as t;
 
 @font-face {
     font-family: Cousine;
@@ -41,24 +26,24 @@ $highlight: #F7BF0A;
 }
 
 html {
-    background-color: $page-background-color;
+    background-color: t.$page-background-color;
     font-family: Cousine;
     height: 100%;
 }
 
 body {
-    color: $font-color;
+    color: t.$font-color;
 
     padding-top: 1vw;
     margin: 1vw;
-    background-image: linear-gradient($darkest, $mid);
+    background-image: linear-gradient(t.$darkest, t.$mid);
     border-radius: 5px;
-    border: 1px solid $mid;
+    border: 1px solid t.$mid;
     box-shadow: 0px 4px 8px black;
 }
 
 .highlight {
-    color: $highlight;
+    color: t.$highlight;
 }
 
 h1, h2, h3 {
@@ -71,30 +56,28 @@ h2 {
 }
 
 #console-container {
-    background-color: $console-background;
-    background-image: linear-gradient($console-background-top, $console-background 20%);
-    border-color: $console-border;
+    background-color: t.$console-background;
+    background-image: linear-gradient(t.$console-background-top, t.$console-background 20%);
+    border-color: t.$console-border;
 }
 
 #table-wrapper {
     overflow-y: auto;
-    height: 22vw;
 }
 
 #table-wrapper::-webkit-scrollbar {
-    background-color: $console-background;
-    // width: 3px;
+    background-color: t.$console-background;
     width: .3vw;
 }
 
 #table-wrapper::-webkit-scrollbar-thumb {
-    background: $console-border;
+    background: t.$console-border;
   }
 
 .input-container {
     display: flex;
     align-items: center;
-    border: 1px solid $console-border;
+    border: 1px solid t.$console-border;
     border-radius: 5px;
     width: 100%;
     margin-top: .5vw;
@@ -105,14 +88,14 @@ h2 {
 }
 
 .input-decoration {
-    color: $font-color;
+    color: t.$font-color;
     font-size: 1.2vw;
 }
 
 #user-input {
-    background-color: $console-background;
+    background-color: t.$console-background;
     border: none;
-    color: $font-color;
+    color: t.$font-color;
     flex: 2;
 }
 
@@ -144,14 +127,14 @@ main {
 
 main > section {
     width: 30%;
-    border: 1px solid $light;
+    border: 1px solid t.$light;
     border-radius: 5px;
     padding: 0.75vw;
     box-shadow: 0px 4px 8px black;
 }
 
 #current-instruction-row, .active {
-    color: $highlight;
+    color: t.$highlight;
     text-shadow: 0px 0px 4px black;
 }
 
@@ -175,7 +158,7 @@ main input, main button {
 }
 
 #registers-table tr > td:nth-of-type(1) {
-    color: $light;
+    color: t.$light;
     text-align: right;
 }
 
@@ -192,7 +175,7 @@ main input, main button {
 }
 
 #instruction-table tr > td:nth-of-type(1) {
-    color: $light;
+    color: t.$light;
 }
 
 #instruction-table tr > td:nth-of-type(2) {
@@ -200,17 +183,17 @@ main input, main button {
 }
 
 #step-button {
-    background-color: $mid;
-    color: $font-color;
-    border: 1px solid $light;
+    background-color: t.$mid;
+    color: t.$font-color;
+    border: 1px solid t.$light;
 }
 
 #step-button:hover {
-    background-color: $button-hover-color;
+    background-color: t.$button-hover-color;
 }
 
 #step-button:active {
-    background-color: $button-press-color;
+    background-color: t.$button-press-color;
 }
 
 #current-instruction {
@@ -231,22 +214,22 @@ footer {
 }
 
 footer > p {
-    color: $footer-font-color;
+    color: t.$footer-font-color;
     text-align: center;
     font-size: 0.8vw;
 }
 
 footer > p > a {
-    color: $footer-link-color;
+    color: t.$footer-link-color;
 }
 
 .dump-window {
     z-index: 1;
     position: fixed;
     
-    background-image: linear-gradient($console-background-top, $console-background);
+    background-image: linear-gradient(t.$console-background-top, t.$console-background);
     border-radius: 5px;
-    border: 1px solid $console-border;
+    border: 1px solid t.$console-border;
     box-shadow: 0px 4px 8px black;
     padding: 1vw;
     left: 24vw;
@@ -260,10 +243,10 @@ footer > p > a {
 }
 
 #dump-hide-button {
-    color: $console-border;
+    color: t.$console-border;
 }
 
 #dump-hide-button:hover {
-    color: $font-color;
+    color: t.$font-color;
     text-decoration: none;
 }

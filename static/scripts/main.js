@@ -244,6 +244,12 @@ function onLoad() {
 
     dumpPopup = $("#dump-window")[0];
 
+    // consoleTable.remove()
+
+    let rows = $("#console-table-body > tr");
+    let height = rows[0].offsetHeight;
+    $("#table-wrapper")[0].style.height = (15 * height) + "px";
+    rows[rows.length - 1].scrollIntoView();
     // give console input field focus
     commandField.focus();
 }

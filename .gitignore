@@ -16,3 +16,4 @@ build/
 
 *.css.map
 *.o
+run.sh

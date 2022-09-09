@@ -1,0 +1,94 @@
+@font-face {
+  font-family: Heebo;
+  src: url(/static/fonts/Heebo-Thin.ttf);
+}
+html {
+  background-color: #111;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+body {
+  background-image: linear-gradient(to bottom, #002D61, #0067A2);
+  width: fit-content;
+  font-family: Heebo;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 2vw;
+  border-radius: 0.5vw;
+  border: 1px solid #0067A2;
+  height: fit-content;
+  padding: 2vw 4vw;
+}
+
+h1 {
+  font-size: 3vw;
+  text-align: center;
+}
+
+h1, h2, p, input[type=file] {
+  text-shadow: 0px 4px 8px black;
+}
+
+input {
+  display: block;
+}
+
+form {
+  width: 40vw;
+  border: 1px solid #8DC9F7;
+  padding: 1vw 2vw 1vw 2vw;
+  margin-top: 1.5vw;
+  border-radius: 0.5vw;
+  box-shadow: 0px 4px 8px black;
+}
+
+input, input::file-selector-button {
+  font-family: Heebo;
+  font-size: 1.25vw;
+}
+
+input {
+  width: 100%;
+}
+
+input::file-selector-button {
+  float: right;
+}
+
+input[type=file]:disabled {
+  color: rgba(255, 255, 255, 0.2);
+  text-shadow: none;
+}
+
+form > p {
+  margin-bottom: 1vw;
+}
+
+label, h2 {
+  font-size: 1.75vw;
+}
+
+form p div {
+  display: block;
+}
+
+form > p > div > label, form > p > div > input {
+  display: inline;
+}
+
+.inline-div {
+  display: none;
+}
+
+.inline-div > * {
+  display: inline;
+  font-size: 1.25vw;
+}
+
+/*# sourceMappingURL=filepicker.css.map */
