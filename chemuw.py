@@ -158,7 +158,7 @@ def home():
             # try to detect branch-to-self (may be overzealous and catch false positives)
             if not result['output'][-1].startswith("Illegal instruction:"):
                 result['output'].append('Execution halted: branch to self')
-        elif command.startswith('d '):
+        elif command == 'd' or command.startswith('d '):
             # dump countered
             dump_raw = result['output'][1:]
             result['output'] = result['output'][:1]
