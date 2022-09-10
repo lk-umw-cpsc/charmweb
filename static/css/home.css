@@ -228,6 +228,7 @@ footer > p > a {
 
 #dump-hide-button {
   color: #4A5156;
+  position: absolute;
 }
 
 #dump-hide-button:hover {
