@@ -195,6 +195,16 @@ int getcmd(char *buf, int nbuf);
 
 int registers_last_step[17];
 
+union dump {
+    int32_t ivalues[32];
+    float fvalues[32];
+};
+
+union dump_bytes {
+    int8_t ivalues[32];
+    char cvalues[32];
+};
+
 union cpsr_bits {
     int32_t n : 1;
     int32_t z : 1;
@@ -228,6 +238,13 @@ uint32_t flag_masks[] = {
     gen_mask(31)
 };
 
+/**
+ * @brief Determines which flags, if any, were updated since the
+ * last time this function was called. Returns a Python list
+ * object containing Python dicts with 'flag' and 'value' keys
+ * 
+ * @return PyObject* The resulting list
+ */
 static PyObject *grab_flag_updates() {
     PyObject *flags = PyList_New(0);
     for (int i = 0; i < NUM_FLAGS; i++) {
@@ -252,6 +269,15 @@ union registerif {
 
 union cpsr_bits flags;
 
+/**
+ * @brief Creates a Python list containing any output posted
+ * to the emulator's output array, revals. The list returned
+ * is a Python list of Python string objects. The command_executed
+ * will be placed as the first element in this created list
+ * 
+ * @param command_executed The command being executed
+ * @return PyObject* The resulting Python list
+ */
 static PyObject *grab_output(char *command_executed) {
     char buff[256];
     // format is "% <command>" - %% escapes the %
@@ -267,6 +293,13 @@ static PyObject *grab_output(char *command_executed) {
     return output_strings;
 }
 
+/**
+ * @brief Creates a Python list containing all of the registers
+ * that were updated after the last command was executed. Each update
+ * is a Python dict with 'register', 'value', 'int', and 'float' keys
+ * 
+ * @return PyObject* The generated Python list
+ */
 static PyObject *grab_updated_registers() {
     PyObject* register_updates_list = PyList_New(0);
 
@@ -288,6 +321,12 @@ static PyObject *grab_updated_registers() {
     return register_updates_list;
 }
 
+/**
+ * @brief Creates a Python list of the current instructions on display
+ * within the emulator. Each is a Python dict with key 'instruction'
+ * 
+ * @return PyObject* A pointer to the generated list
+ */
 static PyObject *grab_instructions() {
     PyObject *instruction_list = PyList_New(0);
     for (int i = 0; i < 11; i++) {
