@@ -4,7 +4,7 @@
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.8/Headers"
+                "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Headers"
             ],
             "defines": [],
             "macFrameworkPath": [
