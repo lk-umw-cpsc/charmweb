@@ -396,7 +396,7 @@ static PyObject *method_do(PyObject *self, PyObject *args) {
     strncpy(command_copy, command, 256);
 
     char *command_args[10];
-    char *s = command;
+    char *s = command_copy;
     char *es = s + strlen(s);
     char *str;
     int argc = 0;
@@ -415,7 +415,7 @@ static PyObject *method_do(PyObject *self, PyObject *args) {
 
     PyObject *instruction_list = grab_instructions();
 
-    PyObject *output_strings = grab_output(command_copy);
+    PyObject *output_strings = grab_output(command);
 
     PyObject *flag_updates = grab_flag_updates();
 

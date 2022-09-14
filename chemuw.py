@@ -134,8 +134,10 @@ def pick_files():
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
+    # Has the user chosen input files? If not, redirect them to that page
     if 'initialized' not in session or session['initialized'] != True:
         return redirect('/init')
+    
     # we receive POST if the user sent a command using the web interface, 
     #   GET if they simply loaded the page in their browser
     if request.method == 'POST':
