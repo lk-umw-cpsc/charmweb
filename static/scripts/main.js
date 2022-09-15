@@ -10,6 +10,8 @@ var instructions = [];
 
 var dumpTable = new Array(8);
 var dumpPopup;
+var lDumpTable = new Array(16);
+var lDumpPopup;
 
 class DumpTableRow {
     constructor(row) {
@@ -19,6 +21,14 @@ class DumpTableRow {
         this.values[1] = $("#dump-value" + row + "-1")[0];
         this.values[2] = $("#dump-value" + row + "-2")[0];
         this.values[3] = $("#dump-value" + row + "-3")[0];
+    }
+}
+
+class LDumpTableRow {
+    constructor(row) {
+        this.address = $("#l-addr" + row)[0];
+        this.instruction = $("#l-instr" + row)[0];
+        this.hex = $("#l-hex" + row)[0];
     }
 }
 
@@ -40,8 +50,16 @@ each register object has an index (0-16) and three strings: hex, integer, fp
  * Function called when the "close" button is pressed within
  * the dump popup window
  */
- function hideDumpWindow() {
+function hideDumpWindow() {
     dumpPopup.style.display = "none";
+}
+
+/**
+ * Function called when the "close" button is pressed within
+ * the instruction dump popup window
+ */
+function hideLDumpWindow() {
+    lDumpPopup.style.display = "none";
 }
 
 /**
@@ -121,12 +139,26 @@ function responseReceived() {
         let dump = response.dump;
         if (dump.length > 0) {
             dumpPopup.style.display = "block";
+            dumpPopup.style.zIndex = 2;
+            lDumpPopup.style.zIndex = 1;
             for (let i = 0; i < dump.length; i++) {
                 dumpTable[i].address.innerHTML = dump[i].address;
                 let values = dump[i].values;
                 for (let v = 0; v < values.length; v++) {
                     dumpTable[i].values[v].innerHTML = values[v];
                 }
+            }
+        }
+        let ldump = response.ldump;
+        if (ldump.length > 0) {
+            lDumpPopup.style.display = "block";
+            lDumpPopup.style.zIndex = 2;
+            dumpPopup.style.zIndex = 1;
+            for (let i = 0; i < ldump.length; i++) {
+                let row = lDumpTable[i];
+                row.address.innerHTML = ldump[i].address;
+                row.instruction.innerHTML = ldump[i].instruction;
+                row.hex.innerHTML = ldump[i].hex;
             }
         }
     } else {
@@ -253,7 +285,12 @@ function onLoad() {
         dumpTable[i] = new DumpTableRow(i);
     }
 
+    for (var i = 0; i < lDumpTable.length; i++) {
+        lDumpTable[i] = new LDumpTableRow(i);
+    }
+
     dumpPopup = $("#dump-window")[0];
+    lDumpPopup = $("#l-window")[0];
 
     let rows = $("#console-table-body > tr");
     // let height = rows[0].offsetHeight;

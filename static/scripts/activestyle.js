@@ -1,4 +1,6 @@
 var inputDiv;
+var lwin;
+var dwin;
 
 /**
  * Function called when the page fully loads
@@ -9,13 +11,17 @@ var inputDiv;
     input = document.getElementById('user-input');
     input.addEventListener('focus',  (event) => { inputDiv.classList.add('border-highlight') });
     input.addEventListener('blur', (event) => { inputDiv.classList.remove('border-highlight') });
-    makeDraggable($('#dump-window')[0]);
+    
+    dwin = $('#dump-window')[0];
+    lwin = $('#l-window')[0];
+    makeDraggable(dwin, lwin);
+    makeDraggable(lwin, dwin);
 }
 
 // Set up onLoad to be called once the DOM for the page is fully loaded
 document.addEventListener("DOMContentLoaded", onLoad2);
 
-function makeDraggable(element) {
+function makeDraggable(element, otherElement) {
     var currentX, currentY, previousX, previousY;
     function doDrag(e) {
         e = e || window.event;
@@ -34,6 +40,8 @@ function makeDraggable(element) {
     function dragMouseDown(e) {
         e = e || window.event;
         e.preventDefault();
+        otherElement.style.zIndex = 1;
+        element.style.zIndex = 2;
         previousX = e.clientX;
         previousY = e.clientY;
         document.onmousemove = doDrag;

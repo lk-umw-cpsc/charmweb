@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
-// #include <ncurses.h>
 #include <Python.h>
 #include "memory.h"
 #include "cpu.h"
@@ -163,7 +162,7 @@ void addresult(char *res) {
 }
 
 // printres has variable arguments just like fprintf
-__attribute__((format(printf, 1, 2)))
+// __attribute__((format(printf, 1, 2)))
 void printres(char *fmt, ...) {
     char res[80];
     va_list ap;

@@ -226,12 +226,16 @@ footer > p > a {
   width: 50vw;
 }
 
-#dump-hide-button {
+#l-window table {
+  width: 30vw;
+}
+
+#dump-hide-button, #l-dump-hide-button {
   color: #4A5156;
   position: absolute;
 }
 
-#dump-hide-button:hover {
+#dump-hide-button:hover, #l-dump-hide-button:hover {
   color: white;
   text-decoration: none;
 }

@@ -154,6 +154,7 @@ def home():
         branch = False
         halted = False
         dump = []
+        l_instructions = []
         if not result['registers'] and command[0] == 's':
             # emulator halted if no registers were updated
             halted = True
@@ -171,6 +172,17 @@ def home():
                 dump_row['values'] = [val0, val4, val8, valc]
                 dump.append(dump_row)
             halted = True
+        elif command == 'l' or command.startswith('l '):
+            instr_raw = result['output'][1:]
+            result['output'] = result['output'][:1]
+            for line in instr_raw:
+                address, hex, instruction = line.split(maxsplit=2)
+                l_row = {}
+                l_row['address'] = address[:10]
+                l_row['hex'] = hex[:10]
+                l_row['instruction'] = instruction
+                l_instructions.append(l_row)
+            halted = True
         else:
             instructions, branch = parse_instructions(result['instructions'])
             session['instructions'] = instructions
@@ -184,7 +196,8 @@ def home():
                 halt=halted, 
                 branch=branch,
                 flags=result['flags'],
-                dump=dump)
+                dump=dump,
+                ldump=l_instructions)
     else:
         # user loaded the webpage
         instructions = session['instructions']
