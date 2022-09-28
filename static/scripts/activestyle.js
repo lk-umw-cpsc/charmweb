@@ -18,9 +18,14 @@ var stylesheet;
     makeDraggable(dwin, lwin);
     makeDraggable(lwin, dwin);
 
+    let cookie = document.cookie;
+    if (cookie) {
+        $('#theme').attr('href', cookie);
+    }
+
     stylesheet = $('#theme')[0];
     $('.theme-option').click(function() {
-        $('#theme').attr('href', $(this).data('stylesheet'));
+        $('#theme').attr('href', document.cookie = $(this).data('stylesheet'));
     });
 }
 
