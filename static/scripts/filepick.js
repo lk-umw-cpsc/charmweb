@@ -26,6 +26,7 @@ function onLoad() {
     chooseOSFilePicker = $('#os-file-picker')[0];
     chooseInputFilePicker = $('#input-file-picker')[0];
     osOptionRadio = document.forms["files"]["os-choice"];
+    console.log(document.cookie);
 }
 
 $(document).ready(onLoad);

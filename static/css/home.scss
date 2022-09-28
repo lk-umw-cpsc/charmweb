@@ -281,6 +281,10 @@ footer > p > a {
     cursor: pointer;
 }
 
+.theme-option:hover {
+    filter: brightness(150%);
+}
+
 #umw-theme {
     color: white;
     background-color: #002D61;
