@@ -262,3 +262,33 @@ footer > p > a {
     text-align: center;
     font-size: 1.2vw;
 }
+
+#theme-picker {
+    position: absolute;
+    float: left;
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 1vw;
+}
+
+.theme-option {
+    display: inline-block;
+    border-radius: 50%;
+    width: 2.0vw;
+    height: 2.0vw;
+    border: 1px solid black;
+    margin-right: 0.5vw;
+    cursor: pointer;
+}
+
+#umw-theme {
+    color: white;
+    background-color: #002D61;
+    border-color: #0067A2;
+}
+
+#dark-theme {
+    color: white;
+    background-color: #1a1a1a;
+    border-color: #333;
+}

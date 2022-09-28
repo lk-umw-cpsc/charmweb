@@ -1,6 +1,7 @@
 var inputDiv;
 var lwin;
 var dwin;
+var stylesheet;
 
 /**
  * Function called when the page fully loads
@@ -16,6 +17,11 @@ var dwin;
     lwin = $('#l-window')[0];
     makeDraggable(dwin, lwin);
     makeDraggable(lwin, dwin);
+
+    stylesheet = $('#theme')[0];
+    $('.theme-option').click(function() {
+        $('#theme').attr('href', $(this).data('stylesheet'));
+    });
 }
 
 // Set up onLoad to be called once the DOM for the page is fully loaded

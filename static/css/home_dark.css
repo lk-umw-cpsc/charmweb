@@ -26,14 +26,14 @@ body {
   color: white;
   padding-top: 1vw;
   margin: 1vw;
-  background-image: linear-gradient(#002D61, #0067A2);
+  background-image: linear-gradient(#1a1a1a, #333);
   border-radius: 5px;
-  border: 1px solid #0067A2;
+  border: 1px solid #333;
   box-shadow: 0px 4px 8px black;
 }
 
 .highlight {
-  color: #F7BF0A;
+  color: #ffb380;
 }
 
 h1, h2, h3 {
@@ -110,7 +110,7 @@ main {
 
 main > section {
   width: 30%;
-  border: 1px solid #8DC9F7;
+  border: 1px solid #bfbfbf;
   border-radius: 5px;
   padding: 0.75vw;
   box-shadow: 0px 4px 8px black;
@@ -118,7 +118,7 @@ main > section {
 }
 
 #current-instruction-row, .active {
-  color: #F7BF0A;
+  color: #ffb380;
   text-shadow: 0px 0px 4px black;
 }
 
@@ -142,7 +142,7 @@ main input, main button {
 }
 
 #registers-table tr > td:nth-of-type(1) {
-  color: #8DC9F7;
+  color: #bfbfbf;
   text-align: right;
 }
 
@@ -160,7 +160,7 @@ main input, main button {
 }
 
 #instruction-table tr > td:nth-of-type(1) {
-  color: #8DC9F7;
+  color: #bfbfbf;
 }
 
 #instruction-table tr > td:nth-of-type(2) {
@@ -168,17 +168,17 @@ main input, main button {
 }
 
 #step-button {
-  background-color: #0067A2;
+  background-color: #333;
   color: white;
-  border: 1px solid #8DC9F7;
+  border: 1px solid #bfbfbf;
 }
 
 #step-button:hover {
-  background-color: #004c79;
+  background-color: #4d4d4d;
 }
 
 #step-button:active {
-  background-color: #002D61;
+  background-color: #262626;
 }
 
 #current-instruction {
@@ -199,7 +199,7 @@ footer {
 }
 
 footer > p {
-  color: #8DC9F7;
+  color: #999999;
   text-align: center;
   font-size: 0.8vw;
 }
@@ -275,4 +275,4 @@ footer > p > a {
   border-color: #333;
 }
 
-/*# sourceMappingURL=home.css.map */
+/*# sourceMappingURL=home_dark.css.map */

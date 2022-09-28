@@ -3,7 +3,7 @@
     <head>
         <title>Chemu Web Interface</title>
         <link href="{{ url_for('static', filename='css/reset.css') }}" rel="stylesheet"/>
-        <link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet"/>
+        <link id="theme" href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet"/>
         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
@@ -177,6 +177,10 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div id="theme-picker">
+            <div class="theme-option" id="umw-theme" data-stylesheet="{{ url_for('static', filename='css/home.css') }}"></div>
+            <div class="theme-option" id="dark-theme" data-stylesheet="{{ url_for('static', filename='css/home_dark.css') }}"></div>
         </div>
         <header>
             <h1>Chemu <span class="highlight">Web Interface</span></h1>
