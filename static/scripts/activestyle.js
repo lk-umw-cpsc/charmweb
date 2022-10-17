@@ -3,6 +3,8 @@ var lwin;
 var dwin;
 var stylesheet;
 
+var windows = [];
+
 /**
  * Function called when the page fully loads
  */
@@ -15,8 +17,10 @@ var stylesheet;
     
     dwin = $('#dump-window')[0];
     lwin = $('#l-window')[0];
-    makeDraggable(dwin, lwin);
-    makeDraggable(lwin, dwin);
+    windows.push(dwin);
+    windows.push(lwin);
+    makeDraggable(dwin);
+    makeDraggable(lwin);
 
     let cookie = document.cookie;
     if (cookie) {
@@ -29,10 +33,21 @@ var stylesheet;
     });
 }
 
+function makeForeground(ele) {
+    let previousZ = ele.style.zIndex;
+    for (let i = 0; i < windows.length; i++) {
+        let zi = windows[i].style.zIndex;
+        if (zi > previousZ) {
+            windows[i].style.zIndex = zi - 1;
+        }
+    }
+    ele.style.zIndex = windows.length;
+}
+
 // Set up onLoad to be called once the DOM for the page is fully loaded
 document.addEventListener("DOMContentLoaded", onLoad2);
 
-function makeDraggable(element, otherElement) {
+function makeDraggable(element) {
     var currentX, currentY, previousX, previousY;
     function doDrag(e) {
         e = e || window.event;
@@ -51,8 +66,7 @@ function makeDraggable(element, otherElement) {
     function dragMouseDown(e) {
         e = e || window.event;
         e.preventDefault();
-        otherElement.style.zIndex = 1;
-        element.style.zIndex = 2;
+        makeForeground(element);
         previousX = e.clientX;
         previousY = e.clientY;
         document.onmousemove = doDrag;

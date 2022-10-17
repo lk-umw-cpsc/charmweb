@@ -139,8 +139,7 @@ function responseReceived() {
         let dump = response.dump;
         if (dump.length > 0) {
             dumpPopup.style.display = "block";
-            dumpPopup.style.zIndex = 2;
-            lDumpPopup.style.zIndex = 1;
+            makeForeground(dumpPopup);
             for (let i = 0; i < dump.length; i++) {
                 dumpTable[i].address.innerHTML = dump[i].address;
                 let values = dump[i].values;
@@ -152,8 +151,7 @@ function responseReceived() {
         let ldump = response.ldump;
         if (ldump.length > 0) {
             lDumpPopup.style.display = "block";
-            lDumpPopup.style.zIndex = 2;
-            dumpPopup.style.zIndex = 1;
+            makeForeground(lDumpPopup);
             for (let i = 0; i < ldump.length; i++) {
                 let row = lDumpTable[i];
                 row.address.innerHTML = ldump[i].address;
