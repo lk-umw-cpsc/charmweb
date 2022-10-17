@@ -2,14 +2,15 @@ from math import isnan
 from mimetypes import init
 from urllib import request
 from flask import Flask, render_template, jsonify, request, session, redirect, url_for
-import time
 
 import chemu
 
 app = Flask(__name__)
 
 app.config['SESSION_TYPE'] = 'memcached'
-app.config['SECRET_KEY'] = 'super secret key'
+# we would change this if the server was accessible by other machines
+# having a key set is required when using the 'session' variable
+app.config['SECRET_KEY'] = 'super secret key' 
 
 app.config['UPLOAD_FOLDER'] = "/uploads"
 app.config['MAX_CONTENT_PATH'] = 65536
@@ -197,7 +198,8 @@ def home():
                 branch=branch,
                 flags=result['flags'],
                 dump=dump,
-                ldump=l_instructions)
+                ldump=l_instructions,
+                dumpUpdates = result['dumpupdates'])
     else:
         # user loaded the webpage
         instructions = session['instructions']

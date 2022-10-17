@@ -189,6 +189,26 @@ function responseReceived() {
             ele.classList.add("active");
         }
     }
+    for (let row = 0; row < dumpTable.length; row++) {
+        let rowValues = dumpTable[row].values;
+        for (let col = 0; col < rowValues.length; col++) {
+            rowValues[col].className = "";
+        }
+    }
+    let dumpUpdates = response.dumpUpdates;
+    if (dumpUpdates) {
+        for (let i = 0; i < dumpUpdates.length; i++) {
+            dumpUpdated(dumpUpdates[i].i, dumpUpdates[i].value);
+        }
+    }
+}
+
+function dumpUpdated(i, value) {
+    let row = Math.floor(i / 4);
+    let col = i % 4;
+    let element = dumpTable[row].values[col];
+    element.innerHTML = value;
+    element.classList.add("active");
 }
 
 /**
@@ -242,23 +262,11 @@ function onLoad() {
     consoleTable = document.getElementById("console-table");
     consoleTableWrapper = document.getElementById("table-wrapper");
 
-    // let temp = new Array(consoleTable.rows.length - 14);
-    // for (var i = consoleTable.rows.length - 1; i >= 14; i--) {
-    //     temp[i] = consoleTable.remove(i);
-    // }
-
-    // $("#table-wrapper")[0].style.height = $("#table-wrapper")[0].clientHeight + "px";
-    // for (var i = 0; i < temp.length; i++) {
-    //     consoleTable.insertRow(temp[i]);
-    // }
-
     while (consoleTable.rows.length > numConsoleDummies && numDummiesRemoved < numConsoleDummies) {
         consoleTable.deleteRow(0);
         numDummiesRemoved++;
     }
     consoleTable.rows[consoleTable.rows.length - 1].scrollIntoView();
-    // let consoleTableHeight = consoleTableWrapper.offsetHeight;
-    // consoleTableWrapper.style.height = consoleTableHeight + 'px';
     
     for (var i = 0; i < 17; i++) {
         var register = {};
@@ -291,8 +299,7 @@ function onLoad() {
     lDumpPopup = $("#l-window")[0];
 
     let rows = $("#console-table-body > tr");
-    // let height = rows[0].offsetHeight;
-    // $("#table-wrapper")[0].style.height = (15 * height) + "px";
+    
     rows[rows.length - 1].scrollIntoView();
     // give console input field focus
     commandField.focus();

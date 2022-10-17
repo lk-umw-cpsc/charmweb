@@ -192,7 +192,11 @@ void do_script(char *scriptfilename);
 int process_args(int argc, char **argv);
 int getcmd(char *buf, int nbuf);
 
+// Lauren's code starts HERE
+
 int registers_last_step[17];
+
+struct memorydump last_dump;
 
 union dump {
     int32_t ivalues[32];
@@ -336,6 +340,21 @@ static PyObject *grab_instructions() {
     return instruction_list;
 }
 
+static PyObject *grab_dump_updates() {
+    char hex_value[11];
+    PyObject *updates = PyList_New(0);
+    struct memorydump dump_current = dump_raw();
+    for (int i = 0; i < 32; i++) {
+        unsigned int value = dump_current.data[i];
+        snprintf(hex_value, 11, "0x%08X", value);
+        if (value != last_dump.data[i]) {
+            PyList_Append(updates, Py_BuildValue("{siss}", "i", i, "value", hex_value));
+        }
+    }
+    last_dump = dump_current;
+    return updates;
+}
+
 /**
  * @brief The C implementation of the chemu.init() method
  * 
@@ -404,12 +423,22 @@ static PyObject *method_do(PyObject *self, PyObject *args) {
         cmdargv[argc] = str;
         argc++;
     }
+
+    int was_dump = strcasecmp(cmdargv[0], "d") == 0;
+
     cmdargv[argc] = NULL;
     if (cmdargv[0][0] == '>') {
         cmdargv[0] = &cmdargv[0][1];
         do_script(cmdargv[0]);
     } else {
         do_cmd(argc, &cmdargv);
+    }
+
+    PyObject *dump_updates = Py_None;
+    if (was_dump) {
+        last_dump = dump_raw();
+    } else {
+        dump_updates = grab_dump_updates();
     }
 
     PyObject *instruction_list = grab_instructions();
@@ -420,11 +449,12 @@ static PyObject *method_do(PyObject *self, PyObject *args) {
 
     PyObject *updated_registers = grab_updated_registers();
 
-    PyObject *returnValue = Py_BuildValue("{sOsOsOsO}", 
+    PyObject *returnValue = Py_BuildValue("{sOsOsOsOsO}", 
             "registers", updated_registers, 
             "instructions", instruction_list,
             "output", output_strings,
-            "flags", flag_updates);
+            "flags", flag_updates,
+            "dumpupdates", dump_updates);
     return returnValue;
 }
 
