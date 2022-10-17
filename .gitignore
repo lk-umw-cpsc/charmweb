@@ -15,5 +15,5 @@ build/
 
 *.css.map
 *.o
-run.sh
 script.scr
+.DS_Store
