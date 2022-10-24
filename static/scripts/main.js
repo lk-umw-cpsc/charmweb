@@ -13,8 +13,8 @@ var dumpPopup;
 var lDumpTable = new Array(16);
 var lDumpPopup;
 
-var commandHistory = new Array('');
-var commandIndex = 1;
+var commandHistory = new Array();
+var commandIndex = 0;
 
 class DumpTableRow {
     constructor(row) {
@@ -74,8 +74,6 @@ function commandEntered() {
         return;
     }
     commandField.value = "";
-    commandHistory.push(command);
-    commandIndex = commandHistory.length;
     runCommand(command);
 }
 
@@ -230,6 +228,8 @@ function connectionFailed() {
  * @param {*} command a string containing the command to execute
  */
 function runCommand(command) {
+    commandHistory.push(command);
+    commandIndex = commandHistory.length;
     var request = new XMLHttpRequest();
     request.open("POST", "/", true);
     request.setRequestHeader("Content-Type", "application/json");
@@ -270,9 +270,11 @@ function onLoad() {
         } else if (e.key == 'ArrowDown') {
             commandIndex++;
             if (commandIndex >= commandHistory.length) {
-                commandIndex = commandHistory.length - 1;
+                commandField.value = "";
+                commandIndex = commandHistory.length;
+            } else {
+                commandField.value = commandHistory[commandIndex];
             }
-            commandField.value = commandHistory[commandIndex];
         }
     });
 
