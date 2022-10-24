@@ -13,6 +13,9 @@ var dumpPopup;
 var lDumpTable = new Array(16);
 var lDumpPopup;
 
+var commandHistory = new Array('');
+var commandIndex = 1;
+
 class DumpTableRow {
     constructor(row) {
         this.address = $("#dump-addr" + row)[0];
@@ -71,6 +74,8 @@ function commandEntered() {
         return;
     }
     commandField.value = "";
+    commandHistory.push(command);
+    commandIndex = commandHistory.length;
     runCommand(command);
 }
 
@@ -256,6 +261,18 @@ function onLoad() {
     commandField.addEventListener("keydown", function (e) {
         if (e.key == "Enter") {
             commandEntered();
+        } else if (e.key == 'ArrowUp') {
+            commandIndex--;
+            if (commandIndex < 0) {
+                commandIndex = 0;
+            }
+            commandField.value = commandHistory[commandIndex];
+        } else if (e.key == 'ArrowDown') {
+            commandIndex++;
+            if (commandIndex >= commandHistory.length) {
+                commandIndex = commandHistory.length - 1;
+            }
+            commandField.value = commandHistory[commandIndex];
         }
     });
 
