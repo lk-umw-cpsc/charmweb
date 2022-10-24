@@ -5,9 +5,17 @@
         <link href="{{ url_for('static', filename='css/reset.css') }}" rel="stylesheet"/>
         <link id="theme" href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet"/>
         
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
-        <script src="{{ url_for('static', filename='scripts/activestyle.js') }}"></script>
+        <script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script type='text/javascript' src="{{ url_for('static', filename='scripts/main.js') }}"></script>
+        <script type='text/javascript' src="{{ url_for('static', filename='scripts/activestyle.js') }}"></script>
+        <script type='text/javascript'>
+            commandHistory.concat([
+            {% for command in command_history %}
+                '{{command}}',
+            {% endfor %}
+            ]);
+            commandIndex = commandHistory.length;
+        </script>
     </head>
     <body>
         <div id="dump-window" class="dump-window">

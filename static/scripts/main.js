@@ -257,6 +257,7 @@ function postOutput(output) {
  * This sets up important global variables and event listeners (user input)
  */
 function onLoad() {
+    console.log(commandHistory);
     commandField = document.getElementById("user-input");
     commandField.addEventListener("keydown", function (e) {
         if (e.key == "Enter") {
@@ -266,7 +267,9 @@ function onLoad() {
             if (commandIndex < 0) {
                 commandIndex = 0;
             }
-            commandField.value = commandHistory[commandIndex];
+            if (commandHistory.length > 0) {
+                commandField.value = commandHistory[commandIndex];
+            }
         } else if (e.key == 'ArrowDown') {
             commandIndex++;
             if (commandIndex >= commandHistory.length) {

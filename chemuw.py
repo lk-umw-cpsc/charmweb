@@ -97,6 +97,7 @@ def init_chemu(input_filename, os_filename):
     result = chemu.init(input_filename, os_filename)
 
     instructions, branch = parse_instructions(result['instructions'])
+    session['command-history'] = []
     
     session['instructions'] = instructions
     registers = session['registers'] = init_regs()
@@ -145,6 +146,7 @@ def home():
         output = session['output']
 
         command = request.get_json()['command']
+        session['command-history'].append(command)
 
         # cap command to 32 characters (don't need massive strings)
         if len(command) > 32:
@@ -216,4 +218,5 @@ def home():
                 instructions=instructions, 
                 output=output,
                 flags=session['flags'],
-                flag_names=session['flag_names'])
+                flag_names=session['flag_names'],
+                command_history=session['command-history'])
