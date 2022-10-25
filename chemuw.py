@@ -146,7 +146,9 @@ def home():
         output = session['output']
 
         command = request.get_json()['command']
-        session['command-history'].append(command)
+        ch = session['command-history']
+        ch.append(command)
+        session['command-history'] = ch
 
         # cap command to 32 characters (don't need massive strings)
         if len(command) > 32:
@@ -220,3 +222,7 @@ def home():
                 flags=session['flags'],
                 flag_names=session['flag_names'],
                 command_history=session['command-history'])
+
+@app.route('/commandhistory', methods=['POST'])
+def fetch_command_history():
+    return jsonify(command_history=session['command-history'])

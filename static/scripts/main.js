@@ -238,6 +238,27 @@ function runCommand(command) {
     request.send(JSON.stringify({command: command}));
 }
 
+function commandHistoryReceived() {
+    const response = JSON.parse(this.responseText);
+    commandHistory.concat(response.command_history);
+    console.log(commandHistory);
+    console.log('success');
+    commandIndex = commandHistory.length;
+}
+
+function fetchFailed() {
+    console.log("Unable to fetch command history");
+}
+
+function fetchCommandHistory() {
+    var request = new XMLHttpRequest();
+    request.open("POST", "/commandhistory", true);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.onload = commandHistoryReceived;
+    request.onerror = fetchFailed;
+    request.send(JSON.stringify({}));
+}
+
 /**
  * Posts a string to the bottom of the console
  * @param {*} output The string to post
@@ -257,7 +278,6 @@ function postOutput(output) {
  * This sets up important global variables and event listeners (user input)
  */
 function onLoad() {
-    console.log(commandHistory);
     commandField = document.getElementById("user-input");
     commandField.addEventListener("keydown", function (e) {
         if (e.key == "Enter") {
@@ -325,6 +345,7 @@ function onLoad() {
     rows[rows.length - 1].scrollIntoView();
     // give console input field focus
     commandField.focus();
+    fetchCommandHistory();
 }
 
 // Set up onLoad to be called once the DOM for the page is fully loaded
