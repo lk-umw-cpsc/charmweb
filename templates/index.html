@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="umw">
     <head>
         <title>Chemu Web Interface</title>
         <link href="{{ url_for('static', filename='css/reset.css') }}" rel="stylesheet"/>
@@ -179,8 +179,8 @@
             </table>
         </div>
         <div id="theme-picker">
-            <div class="theme-option" id="umw-theme" data-stylesheet="{{ url_for('static', filename='css/home.css') }}"></div>
-            <div class="theme-option" id="dark-theme" data-stylesheet="{{ url_for('static', filename='css/home_dark.css') }}"></div>
+            <div class="theme-option" id="umw-theme" data-theme-class="umw"></div>
+            <div class="theme-option" id="dark-theme" data-theme-class="dark"></div>
         </div>
         <header>
             <h1>Chemu <span class="highlight">Web Interface</span></h1>

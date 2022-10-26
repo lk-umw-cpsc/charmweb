@@ -7,7 +7,7 @@ import chemu
 
 app = Flask(__name__)
 
-app.config['SESSION_TYPE'] = 'memcached'
+# app.config['SESSION_TYPE'] = 'memcached'
 # we would change this if the server was accessible by other machines
 # having a key set is required when using the 'session' variable
 app.config['SECRET_KEY'] = 'super secret key' 
@@ -148,7 +148,6 @@ def home():
         command = request.get_json()['command']
         ch = session['command-history']
         ch.append(command)
-        session['command-history'] = ch
 
         # cap command to 32 characters (don't need massive strings)
         if len(command) > 32:
@@ -194,6 +193,7 @@ def home():
         for s in result['output']:
             output.append(s)
         session['output'] = output
+        session.modified = True
         return jsonify(
                 register_updates=result['registers'], 
                 instruction_frame=result['instructions'], 

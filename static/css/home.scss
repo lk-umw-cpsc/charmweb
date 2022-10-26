@@ -5,11 +5,6 @@ The colors below are inserted into the .css file.
 This will make theming/color tweaks easier
 **/
 
-
-// t.$active-instruction-color: 
-
-@use 'theme' as t;
-
 @font-face {
     font-family: Cousine;
     src: url(/static/fonts/Cousine-Regular.ttf);
@@ -25,8 +20,30 @@ This will make theming/color tweaks easier
     src: url(/static/fonts/Urbanist-Medium.ttf)
 }
 
+:root { 
+    --page-background-color: #111;
+  
+    --font-color: white;
+  
+    --footer-font-color: #8DC9F7;
+    --footer-link-color: white;
+    
+    --darkest: #002D61;
+    --mid: #0067A2;
+    --light: #8DC9F7;
+    
+    --button-hover-color: #004c79;
+    --button-press-color: #002D61;
+    
+    --console-border: #4A5156;
+    --console-background: black;
+    --console-background-top: rgb(20, 20, 20);
+    
+    --highlight: #F7BF0A;
+  }
+
 html {
-    background-color: t.$page-background-color;
+    background-color: var(--page-background-color);
     font-family: Cousine;
     height: 100%;
 }
@@ -36,14 +53,14 @@ body {
 
     padding-top: 1vw;
     margin: 1vw;
-    background-image: linear-gradient(t.$darkest, t.$mid);
+    background-image: linear-gradient(var(--darkest), var(--mid));
     border-radius: 5px;
-    border: 1px solid t.$mid;
+    border: 1px solid var(--mid);
     box-shadow: 0px 4px 8px black;
 }
 
 .highlight {
-    color: t.$highlight;
+    color: var(--highlight);
 }
 
 h1, h2, h3 {
@@ -56,9 +73,9 @@ h2 {
 }
 
 #console-container {
-    background-color: t.$console-background;
-    background-image: linear-gradient(t.$console-background-top, t.$console-background 20%);
-    border-color: t.$console-border;
+    background-color: var(--console-background);
+    background-image: linear-gradient(var(--console-background-top), var(--console-background) 20%);
+    border-color: var(--console-border);
 }
 
 #table-wrapper {
@@ -67,18 +84,18 @@ h2 {
 }
 
 #table-wrapper::-webkit-scrollbar {
-    background-color: t.$console-background;
+    background-color: var(--console-background);
     width: .3vw;
 }
 
 #table-wrapper::-webkit-scrollbar-thumb {
-    background: t.$console-border;
+    background: var(--console-border);
   }
 
 .input-container {
     display: flex;
     align-items: center;
-    border: 1px solid t.$console-border;
+    border: 1px solid var(--console-border);
     border-radius: 5px;
     width: 100%;
     margin-top: .5vw;
@@ -89,14 +106,14 @@ h2 {
 }
 
 .input-decoration {
-    color: t.$font-color;
+    color: var(--font-color);
     font-size: 1.2vw;
 }
 
 #user-input {
-    background-color: t.$console-background;
+    background-color: var(--console-background);
     border: none;
-    color: t.$font-color;
+    color: var(--font-color);
     flex: 2;
 }
 
@@ -128,7 +145,7 @@ main {
 
 main > section {
     width: 30%;
-    border: 1px solid t.$light;
+    border: 1px solid var(--light);
     border-radius: 5px;
     padding: 0.75vw;
     box-shadow: 0px 4px 8px black;
@@ -136,7 +153,7 @@ main > section {
 }
 
 #current-instruction-row, .active {
-    color: t.$highlight;
+    color: var(--highlight);
     text-shadow: 0px 0px 4px black;
 }
 
@@ -160,7 +177,7 @@ main input, main button {
 }
 
 #registers-table tr > td:nth-of-type(1) {
-    color: t.$light;
+    color: var(--light);
     text-align: right;
 }
 
@@ -177,7 +194,7 @@ main input, main button {
 }
 
 #instruction-table tr > td:nth-of-type(1) {
-    color: t.$light;
+    color: var(--light);
 }
 
 #instruction-table tr > td:nth-of-type(2) {
@@ -185,17 +202,17 @@ main input, main button {
 }
 
 #step-button {
-    background-color: t.$mid;
+    background-color: var(--mid);
     color: t.$font-color;
-    border: 1px solid t.$light;
+    border: 1px solid var(--light);
 }
 
 #step-button:hover {
-    background-color: t.$button-hover-color;
+    background-color: var(--button-hover-color);
 }
 
 #step-button:active {
-    background-color: t.$button-press-color;
+    background-color: var(--button-press-color);
 }
 
 #current-instruction {
@@ -216,22 +233,22 @@ footer {
 }
 
 footer > p {
-    color: t.$footer-font-color;
+    color: var(--footer-font-color);
     text-align: center;
     font-size: 0.8vw;
 }
 
 footer > p > a {
-    color: t.$footer-link-color;
+    color: var(--footer-link-color);
 }
 
 .dump-window {
     z-index: 1;
     position: fixed;
     
-    background-image: linear-gradient(t.$console-background-top, t.$console-background);
+    background-image: linear-gradient(var(--console-background-top), var(--console-background));
     border-radius: 5px;
-    border: 1px solid t.$console-border;
+    border: 1px solid var(--console-border);
     box-shadow: 0px 4px 8px black;
     padding: 1vw;
     left: 24vw;
@@ -249,12 +266,12 @@ footer > p > a {
 }
 
 #dump-hide-button, #l-dump-hide-button {
-    color: t.$console-border;
+    color: var(--console-border);
     position: absolute;
 }
 
 #dump-hide-button:hover, #l-dump-hide-button:hover {
-    color: t.$font-color;
+    color: var(--font-color);
     text-decoration: none;
 }
 

@@ -22,14 +22,11 @@ var windows = [];
     makeDraggable(dwin);
     makeDraggable(lwin);
 
-    let cookie = document.cookie;
-    if (cookie) {
-        $('#theme').attr('href', cookie);
-    }
-
     stylesheet = $('#theme')[0];
     $('.theme-option').click(function() {
-        $('#theme').attr('href', document.cookie = $(this).data('stylesheet'));
+        let themeClass = $(this).data('theme-class');
+        document.cookie = themeClass;
+        $('html').attr('class', themeClass);
     });
 }
 
@@ -73,4 +70,9 @@ function makeDraggable(element) {
         document.onmouseup = endDrag;
     }
     element.onmousedown = dragMouseDown;
+}
+
+let cookie = document.cookie;
+if (cookie) {
+    $('html').attr('class', cookie);
 }
