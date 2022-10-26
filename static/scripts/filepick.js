@@ -30,3 +30,8 @@ function onLoad() {
 }
 
 $(document).ready(onLoad);
+
+let cookie = document.cookie;
+if (cookie) {
+    $('html').attr('class', cookie);
+}
