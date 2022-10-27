@@ -240,9 +240,7 @@ function runCommand(command) {
 
 function commandHistoryReceived() {
     const response = JSON.parse(this.responseText);
-    commandHistory.concat(response.command_history);
-    console.log(commandHistory);
-    console.log('success');
+    commandHistory = commandHistory.concat(response.command_history);
     commandIndex = commandHistory.length;
 }
 

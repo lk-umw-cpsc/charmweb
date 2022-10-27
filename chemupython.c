@@ -458,10 +458,18 @@ static PyObject *method_do(PyObject *self, PyObject *args) {
     return returnValue;
 }
 
+static PyObject *method_reset(PyObject *self, PyObject *args) {
+    for (int i = 0; i < 25; i++) {
+        strcpy(instinfo[i], "0x00000000 not instruction");
+    }
+    return Py_None;
+}
+
 // Null-terminated array of methods available in the module
 static PyMethodDef chemuMethods[] = {
     {"init", method_init, METH_VARARGS, "Initializes Chemu"},
     {"do", method_do, METH_VARARGS, "Runs a command within Chemu"},
+    {"reset", method_reset, METH_VARARGS, "Resets the emulator"},
     {NULL, NULL, 0, NULL}
 };
 

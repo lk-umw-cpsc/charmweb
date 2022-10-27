@@ -132,13 +132,13 @@ def pick_files():
         fname = 'uploads/' + f.filename
         f.save(fname)
         init_chemu(fname, os)
-        return redirect('/')
+        return redirect(url_for('home'))
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
     # Has the user chosen input files? If not, redirect them to that page
     if 'initialized' not in session or session['initialized'] != True:
-        return redirect('/init')
+        return redirect(url_for('pick_files'))
     
     # we receive POST if the user sent a command using the web interface, 
     #   GET if they simply loaded the page in their browser
@@ -151,7 +151,7 @@ def home():
 
         # cap command to 32 characters (don't need massive strings)
         if len(command) > 32:
-            s = s[:32]
+            command = command[:32]
         result = chemu.do(command)
 
         registers = update_registers(result['registers'])
@@ -214,7 +214,7 @@ def home():
 
         registers = session['registers']
         output = session['output']
-        print(output)
+        print(session['command-history'])
         return render_template('index.html', 
                 registers=registers, 
                 instructions=instructions, 
@@ -226,3 +226,9 @@ def home():
 @app.route('/commandhistory', methods=['POST'])
 def fetch_command_history():
     return jsonify(command_history=session['command-history'])
+
+@app.route('/reinitialize')
+def reinitialize():
+    session.clear()
+    chemu.reset()
+    return redirect(url_for('pick_files'))
