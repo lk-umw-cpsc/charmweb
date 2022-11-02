@@ -346,7 +346,8 @@ static PyObject *grab_dump_updates() {
     struct memorydump dump_current = dump_raw();
     for (int i = 0; i < 32; i++) {
         unsigned int value = dump_current.data[i];
-        snprintf(hex_value, 11, "0x%08X", value);
+        unsigned char *bytes = (unsigned char *)&value;
+        snprintf(hex_value, 11, "0x%02X%02X%02X%02X", bytes[0], bytes[1], bytes[2], bytes[3]);
         if (value != last_dump.data[i]) {
             PyList_Append(updates, Py_BuildValue("{siss}", "i", i, "value", hex_value));
         }
