@@ -65,6 +65,10 @@ function hideLDumpWindow() {
     lDumpPopup.style.display = "none";
 }
 
+function hideMessagesWindow() {
+    $('#message-window').css('display', 'none');
+}
+
 /**
  * Function called when user presses Enter within the input field
  */
@@ -126,6 +130,22 @@ function updateRegister(n, hex, base10, floating) {
  */
 function responseReceived() {
     const response = JSON.parse(this.responseText);
+
+    let output_window = $('#message-table')[0];
+    if (response.messages.length > 0) {
+        let last;
+        for (var message of response.messages) {
+            let tr = document.createElement('tr');
+            let td = document.createElement('td');
+            td.innerHTML = message;
+            tr.appendChild(td);
+            output_window.appendChild(tr);
+            last = tr;
+        }
+        last.scrollIntoView();
+        $('#message-window').css('display', 'block');
+        makeForeground(mwin);
+    }
 
     for (var s of response.output) {
         postOutput(s);

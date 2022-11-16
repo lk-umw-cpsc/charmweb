@@ -97,6 +97,17 @@ void pipeline() {
     }
 }
 
+/**
+ * @brief Clears the instruction history pipeline.
+ * Called by chemu.reset() via method_reset in chemupython.c
+ */
+void reset_pipeline() {
+    for (int i = 0; i < INSTHIST; i++) {
+        insthist[i].addr = 0;
+        insthist[i].inst = 0;
+    }
+}
+
 /******************************************************************
  ***********************  SETTERS/GETTERS *************************
  ******************************************************************/

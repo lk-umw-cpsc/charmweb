@@ -61,14 +61,14 @@ h2 {
     height: 21.5vw;
 }
 
-#table-wrapper::-webkit-scrollbar {
+#table-wrapper::-webkit-scrollbar, #message-window table::-webkit-scrollbar {
     background-color: var(--console-background);
     width: .3vw;
 }
 
-#table-wrapper::-webkit-scrollbar-thumb {
+#table-wrapper::-webkit-scrollbar-thumb, #message-window table::-webkit-scrollbar-thumb {
     background: var(--console-border);
-  }
+}
 
 .input-container {
     display: flex;
@@ -97,14 +97,6 @@ h2 {
 
 #user-input:focus {
     outline: none;
-}
-
-#instruction-container {
-    
-}
-
-#register-container {
-    
 }
 
 header > h1 {
@@ -243,12 +235,19 @@ footer > p > a {
     width: 30vw;
 }
 
-#dump-hide-button, #l-dump-hide-button {
+#message-window table {
+    width: 30vw;
+    max-height: 35vh;
+    overflow-y: scroll;
+    display: block;
+}
+
+#dump-hide-button, #l-dump-hide-button, #messages-hide-button {
     color: var(--console-border);
     position: absolute;
 }
 
-#dump-hide-button:hover, #l-dump-hide-button:hover {
+#dump-hide-button:hover, #l-dump-hide-button:hover, #messages-hide-button:hover {
     color: var(--font-color);
     text-decoration: none;
 }
@@ -264,6 +263,7 @@ footer > p > a {
     display: flex;
     justify-content: flex-start;
     padding-left: 1vw;
+    z-index: 2;
 }
 
 .theme-option {
@@ -290,4 +290,17 @@ footer > p > a {
     color: white;
     background-color: #1a1a1a;
     border-color: #333;
+}
+
+#reset-button-container {
+    display: block;
+    text-align: right;
+    position: absolute;
+    left: 0;
+    right: 2.0vw;
+}
+
+#reset-button {
+    display: inline;
+    width: 3vw;
 }

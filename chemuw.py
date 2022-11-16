@@ -1,5 +1,6 @@
 from math import isnan
 from mimetypes import init
+import sys
 from urllib import request
 from flask import Flask, render_template, jsonify, request, session, redirect, url_for
 
@@ -95,6 +96,7 @@ def session_init():
 def init_chemu(input_filename, os_filename):
     # initialize the emulator
     result = chemu.init(input_filename, os_filename)
+    floaties = result['floaties']
 
     instructions, branch = parse_instructions(result['instructions'])
     session['command-history'] = []
@@ -130,6 +132,7 @@ def pick_files():
             os_file.save(os)
         f = request.files['input-file']
         fname = 'uploads/' + f.filename
+        file = fname
         f.save(fname)
         init_chemu(fname, os)
         return redirect(url_for('home'))
@@ -203,7 +206,8 @@ def home():
                 flags=result['flags'],
                 dump=dump,
                 ldump=l_instructions,
-                dumpUpdates = result['dumpupdates'])
+                dumpUpdates = result['dumpupdates'],
+                messages=result['floaties'])
     else:
         # user loaded the webpage
         instructions = session['instructions']

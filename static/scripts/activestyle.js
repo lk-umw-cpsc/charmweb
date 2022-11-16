@@ -1,6 +1,7 @@
 var inputDiv;
 var lwin;
 var dwin;
+var mwin;
 var stylesheet;
 
 var windows = [];
@@ -17,16 +18,23 @@ var windows = [];
     
     dwin = $('#dump-window')[0];
     lwin = $('#l-window')[0];
+    mwin = $('#message-window')[0];
     windows.push(dwin);
     windows.push(lwin);
+    windows.push(mwin);
     makeDraggable(dwin);
     makeDraggable(lwin);
+    makeDraggable(mwin);
 
     stylesheet = $('#theme')[0];
     $('.theme-option').click(function() {
         let themeClass = $(this).data('theme-class');
         document.cookie = themeClass;
         $('html').attr('class', themeClass);
+    });
+
+    $('#reset-button').click(function() {
+        window.open("/reinitialize","_self");
     });
 }
 

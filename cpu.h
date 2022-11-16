@@ -47,6 +47,7 @@ int step();
 int step_n(int n);
 void step_show_reg();
 void step_show_reg_mem();
+void reset_pipeline();
 void pipeline();
 void show_mem_changed();
 void chemuscanf(char *str);

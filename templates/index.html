@@ -11,6 +11,17 @@
         <script type='text/javascript' src="{{ url_for('static', filename='scripts/activestyle.js') }}"></script>
     </head>
     <body>
+        <div id="message-window" class="dump-window">
+            <div id="hide-button-container">
+                <a href="#" id="messages-hide-button" onclick="hideMessagesWindow()">&times;</a>
+            </div>
+            <h2>Messages</h2>
+            <table>
+                <tbody id="message-table">
+                    
+                </tbody>
+            </table>
+        </div>
         <div id="dump-window" class="dump-window">
             <div id="hide-button-container">
                 <a href="#" id="dump-hide-button" onclick="hideDumpWindow()">&times;</a>
@@ -182,6 +193,11 @@
         <div id="theme-picker">
             <div class="theme-option" id="umw-theme" data-theme-class="umw"></div>
             <div class="theme-option" id="dark-theme" data-theme-class="dark"></div>
+        </div>
+        <div id="reset-button-container">
+            <a href="/reinitialize">
+                <img id="reset-button" src="{{ url_for('static', filename='images/restart.svg') }}" />
+            </a>
         </div>
         <header>
             <h1>Chemu <span class="highlight">Web Interface</span></h1>

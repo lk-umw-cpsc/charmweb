@@ -194,6 +194,46 @@ int getcmd(char *buf, int nbuf);
 
 // Lauren's code starts HERE
 
+#define FLOATING_MESSAGE_MAX_MESSAGES 16
+#define FLOATING_MESSAGE_MAX_LENGTH 64
+char floating_messages[FLOATING_MESSAGE_MAX_MESSAGES][FLOATING_MESSAGE_MAX_LENGTH] = {""};
+unsigned int next_floating_message = 0;
+
+/**
+ * @brief Posts a message to the floating_messages array
+ * 
+ * @param message The message to post
+ */
+void post_floaty_message(char *message) {
+    if (next_floating_message >= FLOATING_MESSAGE_MAX_MESSAGES) {
+        return;
+    }
+    int length = strlen(message);
+    if (length > 63) {
+        length = 63;
+    }
+    strncpy(floating_messages[next_floating_message], message, length);
+    floating_messages[next_floating_message][length] = 0;
+    next_floating_message++;
+}
+
+/**
+ * @brief Creates a Python list containing all the strings
+ * posted to the floating messages array via post_floaty_message
+ * since the last time get_floaty_messages was called
+ * 
+ * @return PyObject* The list containing the strings
+ */
+PyObject *get_floaty_messages() {
+    PyObject *messages = PyList_New(0);
+    for (int i = 0; i < next_floating_message; i++) {
+        PyObject *s = Py_BuildValue("s", floating_messages[i]);
+        PyList_Append(messages, s);
+    }
+    next_floating_message = 0;
+    return messages;
+}
+
 int registers_last_step[17];
 
 struct memorydump last_dump;
@@ -391,11 +431,14 @@ static PyObject *method_init(PyObject *self, PyObject *args) {
     PyObject *updated_registers = grab_updated_registers();
     PyObject *instructions = grab_instructions();
 
-    return Py_BuildValue("{sOsOsOsO}", 
+    post_floaty_message("Test");
+
+    return Py_BuildValue("{sOsOsOsOsO}", 
             "registers", updated_registers, 
             "instructions", instructions,
             "output", output,
-            "flags", flag_updates);
+            "flags", flag_updates,
+            "floaties", get_floaty_messages());
 }
 
 /**
@@ -410,7 +453,6 @@ static PyObject *method_do(PyObject *self, PyObject *args) {
     if (!PyArg_ParseTuple(args, "s", &command)) {
         return NULL;
     }
-
     char command_copy[256];
     strncpy(command_copy, command, 256);
 
@@ -450,18 +492,29 @@ static PyObject *method_do(PyObject *self, PyObject *args) {
 
     PyObject *updated_registers = grab_updated_registers();
 
-    PyObject *returnValue = Py_BuildValue("{sOsOsOsOsO}", 
+    PyObject *returnValue = Py_BuildValue("{sOsOsOsOsOsO}", 
             "registers", updated_registers, 
             "instructions", instruction_list,
             "output", output_strings,
             "flags", flag_updates,
-            "dumpupdates", dump_updates);
+            "dumpupdates", dump_updates,
+            "floaties", get_floaty_messages());
     return returnValue;
 }
 
+/**
+ * @brief This function is called via chemu.reset() in Python
+ * It resets the instruction pipeline and clears the contents of
+ * the registers
+ * 
+ * @param self Pointer to calling Python object
+ * @param args Pointer to Python key word arguments
+ * @return PyObject* None
+ */
 static PyObject *method_reset(PyObject *self, PyObject *args) {
-    for (int i = 0; i < 25; i++) {
-        strcpy(instinfo[i], "0x00000000 not instruction");
+    reset_pipeline();
+    for (int i = 0; i < 17; i++) {
+        registers[i] = 0;
     }
     return Py_None;
 }
