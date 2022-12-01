@@ -1,5 +1,5 @@
 # Chemu Web
-Chemu Web (chemuw) is a web frontend for the Charm ISA emulator. It will allow you to run Charm ISA .o files within your web browser and see how each line affects the Charm CPU's registers and memory, all within a user-friendly interface that makes using the emulator more intuitive.
+Chemu Web (chemuw) is a web frontend for the Charm ISA emulator. It will allow you to run Charm ISA .o files within your web browser and see how each instruction affects the Charm CPU's registers and memory, all within a user-friendly interface that makes using the emulator more intuitive.
 
 To create .o files, you will need to assemble .s files containing Charm assembly code using Gusty's `chasm` tool. See [Gusty's website](https://gusty.bike/charm.html) for more info about the ISA, including ISA specifications and how to use tools like `chasm`. Visit [his repo](https://github.com/gustycooper/cpsc305) to download the tools needed to create .o files, along with sample .s files which can be assembled into .o files and used with this project (see the `charm/isacode` folder within his repo).
 
