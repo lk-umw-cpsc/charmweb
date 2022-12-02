@@ -1,6 +1,4 @@
 from math import isnan
-from mimetypes import init
-import sys
 from urllib import request
 from flask import Flask, render_template, jsonify, request, session, redirect, url_for
 
